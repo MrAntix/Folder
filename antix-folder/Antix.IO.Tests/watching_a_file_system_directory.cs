@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using Antix.IO.Events;
+using Antix.IO.Entities;
 using Xunit;
 
 namespace Antix.IO.Tests
@@ -30,17 +32,16 @@ namespace Antix.IO.Tests
             Thread.Sleep(2000);
 
             sut.Watch(
-                new IODirectory
+                new IODirectoryEntity
                     {
                         Path = tempPath
                     })
                 .Subscribe(e =>
                                {
-                                   Console.WriteLine(e.Type);
-                                   Console.WriteLine(e.Object.Path);
+                                   Console.WriteLine(e);
 
-                                   observed = e.Object.Path == tempFile
-                                              && e.Type == IOEventType.Created;
+                                   observed = e.Entity.Path == tempFile
+                                              && e is IOCreatedEvent;
                                });
 
             // act
@@ -77,17 +78,16 @@ namespace Antix.IO.Tests
             Thread.Sleep(2000);
 
             sut.Watch(
-                new IODirectory
+                new IODirectoryEntity
                     {
                         Path = tempPath
                     })
                 .Subscribe(e =>
                                {
-                                   Console.WriteLine(e.Type);
-                                   Console.WriteLine(e.Object.Path);
+                                   Console.WriteLine(e);
 
-                                   observed = e.Object.Path == tempFile
-                                              && e.Type == IOEventType.Updated;
+                                   observed = e.Entity.Path == tempFile
+                                              && e is IOUpdatedEvent;
                                });
 
             // act
@@ -125,17 +125,16 @@ namespace Antix.IO.Tests
             Thread.Sleep(2000);
 
             sut.Watch(
-                new IODirectory
+                new IODirectoryEntity
                     {
                         Path = tempPath
                     })
                 .Subscribe(e =>
                                {
-                                   Console.WriteLine(e.Type);
-                                   Console.WriteLine(e.Object.Path);
+                                   Console.WriteLine(e);
 
-                                   observed = e.Object.Path == tempFile
-                                              && e.Type == IOEventType.Deleted;
+                                   observed = e.Entity.Path == tempFile
+                                              && e is IODeletedEvent;
                                });
 
             // act

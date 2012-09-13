@@ -55,11 +55,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IIOSystem.cs" />
-    <Compile Include="IODirectory.cs" />
-    <Compile Include="IOEvent.cs" />
-    <Compile Include="IOEventType.cs" />
-    <Compile Include="IOFile.cs" />
-    <Compile Include="IOObject.cs" />
+    <Compile Include="Events\IOCreatedEvent.cs" />
+    <Compile Include="Events\IODeletedEvent.cs" />
+    <Compile Include="Events\Base\IOEvent.cs" />
+    <Compile Include="IOFileSystem.cs" />
+    <Compile Include="Events\IORenamedEvent.cs" />
+    <Compile Include="Events\IOUpdatedEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
