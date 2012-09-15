@@ -54,14 +54,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Base\IOEntity.cs" />
+    <Compile Include="Entities\IODirectoryEntity.cs" />
+    <Compile Include="Entities\IOFileEntity.cs" />
+    <Compile Include="Entities\IONullEntity.cs" />
     <Compile Include="IIOSystem.cs" />
     <Compile Include="Events\IOCreatedEvent.cs" />
     <Compile Include="Events\IODeletedEvent.cs" />
     <Compile Include="Events\Base\IOEvent.cs" />
     <Compile Include="IOFileSystem.cs" />
-    <Compile Include="Events\IORenamedEvent.cs" />
+    <Compile Include="Events\IOMovedEvent.cs" />
     <Compile Include="Events\IOUpdatedEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WatchSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

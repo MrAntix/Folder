@@ -1,6 +1,6 @@
 ﻿using System;
-using Antix.IO.Events.Base;
 using Antix.IO.Entities.Base;
+using Antix.IO.Events.Base;
 
 namespace Antix.IO
 {
@@ -14,6 +14,6 @@ namespace Antix.IO
         IOEntity GetInfo(string path);
 
         IObservable<IOEvent> Watch(IOEntity entity);
-        IObservable<IOEvent> Watch(IOEntity entity, TimeSpan interval);
+        IObservable<IOEvent> Watch(IOEntity entity, WatchSettings settings);
     }
 }

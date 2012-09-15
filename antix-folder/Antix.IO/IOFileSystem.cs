@@ -2,10 +2,10 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
-using Antix.IO.Events;
-using Antix.IO.Events.Base;
 using Antix.IO.Entities;
 using Antix.IO.Entities.Base;
+using Antix.IO.Events;
+using Antix.IO.Events.Base;
 
 namespace Antix.IO
 {
@@ -18,23 +18,30 @@ namespace Antix.IO
 
         public static IOEntity GetInfo(string path)
         {
+            if (string.IsNullOrWhiteSpace(path)) throw new ArgumentException("path");
+
             return File.Exists(path)
-                       ? (IOEntity) new IOFileEntity {Path = path}
-                       : new IODirectoryEntity {Path = path};
+                       ? new IOFileEntity {Path = path}
+                       : Directory.Exists(path)
+                             ? (IOEntity) new IODirectoryEntity {Path = path}
+                             : new IONullEntity {Path = path};
         }
 
         IObservable<IOEvent> IIOSystem.Watch(IOEntity entity)
         {
-            return Watch(entity, TimeSpan.FromSeconds(2));
+            return Watch(entity, new WatchSettings());
         }
 
-        IObservable<IOEvent> IIOSystem.Watch(IOEntity entity, TimeSpan interval)
+        IObservable<IOEvent> IIOSystem.Watch(IOEntity entity, WatchSettings settings)
         {
-            return Watch(entity, interval);
+            return Watch(entity, settings);
         }
 
-        IObservable<IOEvent> Watch(IOEntity entity, TimeSpan interval)
+        IObservable<IOEvent> Watch(IOEntity entity, WatchSettings settings)
         {
+            if (entity == null) throw new ArgumentNullException("entity");
+            if (settings == null) throw new ArgumentNullException("settings");
+
             return Observable
                 .Create<IOEvent>(
                     observer
@@ -43,29 +50,53 @@ namespace Antix.IO
                             var fileSystemWatcher = new FileSystemWatcher(entity.Path)
                                                         {
                                                             EnableRaisingEvents = true,
-                                                            IncludeSubdirectories = true
+                                                            IncludeSubdirectories = settings.IncludeSubdirectories
                                                         };
 
                             GetFileSystemWatcherObservables(fileSystemWatcher)
-                                .Buffer(interval)
+                                .Buffer(settings.Interval)
                                 .Subscribe(ae =>
                                                {
-                                                   foreach (var es in ae.GroupBy(x => x.Entity.Path))
+                                                   foreach (var es in ae.GroupBy(x => x.FullPath))
                                                    {
-                                                       var last = es.Last();
-                                                       if (last is IODeletedEvent)
-                                                           observer.OnNext(last);
+                                                       var first = es.First();
+                                                       var firstRenamed = es.First() as RenamedEventArgs;
 
+                                                       var last = es.Last();
+                                                       if (last.ChangeType == WatcherChangeTypes.Deleted)
+                                                       {
+                                                           // if deleted, check if renamed 
+                                                           // and raise the old file as deleted
+                                                           var path = firstRenamed == null
+                                                                          ? last.FullPath
+                                                                          : firstRenamed.OldFullPath;
+
+                                                           observer.OnNext(
+                                                               new IODeletedEvent(
+                                                                   GetInfo(path)));
+                                                       }
                                                        else
                                                        {
-                                                           var first = es.First();
-                                                           if (first is IOCreatedEvent)
-                                                               observer.OnNext(first);
+                                                           if (firstRenamed != null)
+                                                           {
+                                                               // raise the rename on the old file
+                                                               observer.OnNext(
+                                                                   new IOMovedEvent(
+                                                                       GetInfo(firstRenamed.OldFullPath),
+                                                                       GetInfo(firstRenamed.FullPath)));
+                                                           }
 
+                                                           if (first.ChangeType == WatcherChangeTypes.Created)
+                                                           {
+                                                               observer.OnNext(
+                                                                   new IOCreatedEvent(
+                                                                       GetInfo(last.FullPath)));
+                                                           }
                                                            else
                                                            {
                                                                observer.OnNext(
-                                                                   new IOUpdatedEvent(first.Entity)
+                                                                   new IOUpdatedEvent(
+                                                                       GetInfo(first.FullPath))
                                                                    );
                                                            }
                                                        }
@@ -76,34 +107,27 @@ namespace Antix.IO
                         });
         }
 
-        IObservable<IOEvent> GetFileSystemWatcherObservables(FileSystemWatcher fileSystemWatcher)
+        IObservable<FileSystemEventArgs> GetFileSystemWatcherObservables(FileSystemWatcher fileSystemWatcher)
         {
+            if (fileSystemWatcher == null) throw new ArgumentNullException("fileSystemWatcher");
+
             return new[]
                        {
                            Observable
                                .FromEventPattern<FileSystemEventArgs>(fileSystemWatcher, "Created")
-                               .Select(ev => new IOCreatedEvent(GetInfo(ev.EventArgs.FullPath))),
-
+                               .Select(ev => ev.EventArgs),
                            Observable
                                .FromEventPattern<FileSystemEventArgs>(fileSystemWatcher, "Changed")
-                               .Select(ev => new IOUpdatedEvent(GetInfo(ev.EventArgs.FullPath))),
-
+                               .Select(ev => ev.EventArgs),
                            Observable
                                .FromEventPattern<RenamedEventArgs>(fileSystemWatcher, "Renamed")
-                               .Select(ev =>
-                                       new IORenamedEvent(
-                                           GetInfo(ev.EventArgs.FullPath),
-                                           ev.EventArgs.OldFullPath
-                                           )
-                               ),
-
+                               .Select(ev => ev.EventArgs),
                            Observable
                                .FromEventPattern<FileSystemEventArgs>(fileSystemWatcher, "Deleted")
-                               .Select(ev => new IODeletedEvent(GetInfo(ev.EventArgs.FullPath))),
-
+                               .Select(ev => ev.EventArgs),
                            Observable
                                .FromEventPattern<ErrorEventArgs>(fileSystemWatcher, "Error")
-                               .SelectMany(ev => Observable.Throw<IOEvent>(ev.EventArgs.GetException()))
+                               .SelectMany(ev => Observable.Throw<FileSystemEventArgs>(ev.EventArgs.GetException()))
                        }
                 .Merge();
         }

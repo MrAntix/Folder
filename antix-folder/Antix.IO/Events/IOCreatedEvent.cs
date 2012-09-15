@@ -1,5 +1,5 @@
-using Antix.IO.Events.Base;
 using Antix.IO.Entities.Base;
+using Antix.IO.Events.Base;
 
 namespace Antix.IO.Events
 {
