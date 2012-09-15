@@ -2,42 +2,25 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
-using Antix.IO.Entities;
 using Antix.IO.Entities.Base;
 using Antix.IO.Events;
 using Antix.IO.Events.Base;
 
-namespace Antix.IO
+namespace Antix.IO.FileSystem
 {
-    public class IOFileSystem : IIOSystem
+    public class IOFileSystemWatcher :
+        IIOFileSystemWatcher
     {
-        IOEntity IIOSystem.GetInfo(string path)
+        readonly IIOFileSystemInfoProvider _fileSystemInfoProvider;
+
+        public IOFileSystemWatcher(
+            IIOFileSystemInfoProvider fileSystemInfoProvider)
         {
-            return GetInfo(path);
+            _fileSystemInfoProvider = fileSystemInfoProvider;
         }
 
-        public static IOEntity GetInfo(string path)
-        {
-            if (string.IsNullOrWhiteSpace(path)) throw new ArgumentException("path");
-
-            return File.Exists(path)
-                       ? new IOFileEntity {Path = path}
-                       : Directory.Exists(path)
-                             ? (IOEntity) new IODirectoryEntity {Path = path}
-                             : new IONullEntity {Path = path};
-        }
-
-        IObservable<IOEvent> IIOSystem.Watch(IOEntity entity)
-        {
-            return Watch(entity, new WatchSettings());
-        }
-
-        IObservable<IOEvent> IIOSystem.Watch(IOEntity entity, WatchSettings settings)
-        {
-            return Watch(entity, settings);
-        }
-
-        IObservable<IOEvent> Watch(IOEntity entity, WatchSettings settings)
+        public IObservable<IOEvent> Watch(
+            IOEntity entity, IOWatchSettings settings)
         {
             if (entity == null) throw new ArgumentNullException("entity");
             if (settings == null) throw new ArgumentNullException("settings");
@@ -73,7 +56,7 @@ namespace Antix.IO
 
                                                            observer.OnNext(
                                                                new IODeletedEvent(
-                                                                   GetInfo(path)));
+                                                                   _fileSystemInfoProvider.GetInfo(path)));
                                                        }
                                                        else
                                                        {
@@ -82,26 +65,29 @@ namespace Antix.IO
                                                                // raise the rename on the old file
                                                                observer.OnNext(
                                                                    new IOMovedEvent(
-                                                                       GetInfo(firstRenamed.OldFullPath),
-                                                                       GetInfo(firstRenamed.FullPath)));
+                                                                       _fileSystemInfoProvider.GetInfo(
+                                                                           firstRenamed.OldFullPath),
+                                                                       _fileSystemInfoProvider.GetInfo(
+                                                                           firstRenamed.FullPath)));
                                                            }
 
                                                            if (first.ChangeType == WatcherChangeTypes.Created)
                                                            {
                                                                observer.OnNext(
                                                                    new IOCreatedEvent(
-                                                                       GetInfo(last.FullPath)));
+                                                                       _fileSystemInfoProvider.GetInfo(last.FullPath)));
                                                            }
                                                            else
                                                            {
                                                                observer.OnNext(
                                                                    new IOUpdatedEvent(
-                                                                       GetInfo(first.FullPath))
+                                                                       _fileSystemInfoProvider.GetInfo(first.FullPath))
                                                                    );
                                                            }
                                                        }
                                                    }
-                                               });
+                                               },
+                                           observer.OnError);
 
                             return fileSystemWatcher.Dispose;
                         });

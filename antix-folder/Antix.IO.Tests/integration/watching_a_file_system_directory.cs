@@ -3,15 +3,18 @@ using System.IO;
 using System.Threading;
 using Antix.IO.Entities;
 using Antix.IO.Events;
+using Antix.IO.FileSystem;
 using Xunit;
 
-namespace Antix.IO.Tests
+namespace Antix.IO.Tests.integration
 {
     public class watching_a_file_system_directory
     {
-        static IIOSystem GetServiceUnderTest()
+        static IOFileSystemWatcher GetServiceUnderTest()
         {
-            return new IOFileSystem();
+            var infoProvider = new IOFileSystemInfoProvider();
+
+            return new IOFileSystemWatcher(infoProvider);
         }
 
         [Fact]
@@ -29,13 +32,15 @@ namespace Antix.IO.Tests
             if (File.Exists(tempFile))
                 File.Delete(tempFile);
 
-            Thread.Sleep(2000);
+            Thread.Sleep(100);
 
             sut.Watch(
                 new IODirectoryEntity
                     {
                         Path = tempPath
-                    })
+                    },
+                new IOWatchSettings()
+                )
                 .Subscribe(e =>
                                {
                                    Console.WriteLine(e);
@@ -53,7 +58,7 @@ namespace Antix.IO.Tests
                 tempFile,
                 "Hello there");
 
-            Thread.Sleep(10000);
+            Thread.Sleep(2100);
 
             Assert.True(observed);
         }
@@ -75,13 +80,15 @@ namespace Antix.IO.Tests
                 tempFile,
                 "Hello");
 
-            Thread.Sleep(2000);
+            Thread.Sleep(100);
 
             sut.Watch(
                 new IODirectoryEntity
                     {
                         Path = tempPath
-                    })
+                    },
+                new IOWatchSettings()
+                )
                 .Subscribe(e =>
                                {
                                    Console.WriteLine(e);
@@ -100,7 +107,7 @@ namespace Antix.IO.Tests
                 tempFile,
                 "Hello there");
 
-            Thread.Sleep(3000);
+            Thread.Sleep(2100);
 
             Assert.True(observed);
         }
@@ -112,31 +119,36 @@ namespace Antix.IO.Tests
 
             var observed = false;
 
-            var tempPath = Path.Combine(Path.GetTempPath(), "rename");
-            if (!Directory.Exists(tempPath))
-                Directory.CreateDirectory(tempPath);
+            var tempDirectory = Path.Combine(Path.GetTempPath(), "rename");
+            if (!Directory.Exists(tempDirectory))
+                Directory.CreateDirectory(tempDirectory);
 
-            var tempFile = Path.Combine(tempPath, "file.tmp");
-            var tempFileMoved = Path.Combine(tempPath, "fileMoved.tmp");
+            var tempFile = Path.Combine(tempDirectory, "file.tmp");
+            var tempFileMoved = Path.Combine(tempDirectory, "fileMoved.tmp");
             if (File.Exists(tempFileMoved)) File.Delete(tempFileMoved);
 
             File.WriteAllText(
                 tempFile,
                 "Hello");
 
-            Thread.Sleep(2000);
+            Thread.Sleep(100);
 
             sut.Watch(
                 new IODirectoryEntity
                     {
-                        Path = tempPath
-                    })
+                        Path = tempDirectory
+                    },
+                new IOWatchSettings()
+                )
                 .Subscribe(e =>
                                {
                                    Console.WriteLine(e);
 
-                                   if (e.Entity.Path == tempFile)
-                                        observed = e is IOMovedEvent;
+                                   var movedEvent = e as IOMovedEvent;
+                                   if (movedEvent != null
+                                       && movedEvent.Entity.Path == tempFile
+                                       && movedEvent.NewEntity.Path == tempFileMoved)
+                                       observed = true;
                                });
 
             // act
@@ -149,7 +161,7 @@ namespace Antix.IO.Tests
                 tempFileMoved,
                 "Hello There");
 
-            Thread.Sleep(3000);
+            Thread.Sleep(2100);
 
             Assert.True(observed);
         }
@@ -171,13 +183,15 @@ namespace Antix.IO.Tests
                 tempFile,
                 "Hello");
 
-            Thread.Sleep(2000);
+            Thread.Sleep(100);
 
             sut.Watch(
                 new IODirectoryEntity
                     {
                         Path = tempPath
-                    })
+                    },
+                new IOWatchSettings()
+                )
                 .Subscribe(e =>
                                {
                                    Console.WriteLine(e);
@@ -190,7 +204,35 @@ namespace Antix.IO.Tests
             File.Delete(
                 tempFile);
 
-            Thread.Sleep(3000);
+            Thread.Sleep(2100);
+
+            Assert.True(observed);
+        }
+
+        [Fact]
+        public void error_raised_on_directory_deleted()
+        {
+            var observed = false;
+            var tempDirectory = Path.Combine(Path.GetTempPath(), "todelete");
+            if (!Directory.Exists(tempDirectory))
+                Directory.CreateDirectory(tempDirectory);
+
+            var sut = GetServiceUnderTest();
+            sut.Watch(
+                new IODirectoryEntity
+                    {
+                        Path = tempDirectory
+                    },
+                new IOWatchSettings()
+                )
+                .Subscribe(
+                    Console.WriteLine,
+                    ex => { observed = true; });
+
+            // act
+            Directory.Delete(tempDirectory);
+
+            Thread.Sleep(100);
 
             Assert.True(observed);
         }

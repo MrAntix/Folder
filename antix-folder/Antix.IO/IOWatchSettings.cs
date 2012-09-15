@@ -2,9 +2,9 @@ using System;
 
 namespace Antix.IO
 {
-    public class WatchSettings
+    public class IOWatchSettings
     {
-        public WatchSettings()
+        public IOWatchSettings()
         {
             Interval = TimeSpan.FromSeconds(2);
             IncludeSubdirectories = true;

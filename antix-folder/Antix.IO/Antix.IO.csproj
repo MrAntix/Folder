@@ -58,15 +58,19 @@
     <Compile Include="Entities\IODirectoryEntity.cs" />
     <Compile Include="Entities\IOFileEntity.cs" />
     <Compile Include="Entities\IONullEntity.cs" />
+    <Compile Include="FileSystem\IIOFileSystemInfoProvider.cs" />
+    <Compile Include="FileSystem\IIOFileSystemWatcher.cs" />
+    <Compile Include="FileSystem\IOFileSystemInfoProvider.cs" />
+    <Compile Include="FileSystem\IOFileSystemWatcher.cs" />
     <Compile Include="IIOSystem.cs" />
     <Compile Include="Events\IOCreatedEvent.cs" />
     <Compile Include="Events\IODeletedEvent.cs" />
     <Compile Include="Events\Base\IOEvent.cs" />
-    <Compile Include="IOFileSystem.cs" />
+    <Compile Include="FileSystem\IOFileSystem.cs" />
     <Compile Include="Events\IOMovedEvent.cs" />
     <Compile Include="Events\IOUpdatedEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WatchSettings.cs" />
+    <Compile Include="IOWatchSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
