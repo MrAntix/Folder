@@ -70,6 +70,25 @@ namespace Antix.IO.Tests.unit
         }
 
         [Fact]
+        public void watch_without_settings_passes_default()
+        {
+            var entity = new IOFileEntity
+            {
+                Path = "A Path"
+            };
+            var mock = GetWatcherMock();
+            mock
+                .Setup(o => o.Watch(entity, IOWatchSettings.Default))
+                .Verifiable();
+
+            var sut = GetServiceUnderTest(watcherMock: mock);
+
+            sut.Watch(entity);
+
+            mock.VerifyAll();
+        }
+
+        [Fact]
         public void watch_with_settings_calls_watcher()
         {
             var entity = new IOFileEntity
@@ -83,7 +102,7 @@ namespace Antix.IO.Tests.unit
 
             var sut = GetServiceUnderTest(watcherMock: mock);
 
-            sut.Watch(entity, new IOWatchSettings());
+            sut.Watch(entity, IOWatchSettings.Default);
 
             mock.VerifyAll();
         }

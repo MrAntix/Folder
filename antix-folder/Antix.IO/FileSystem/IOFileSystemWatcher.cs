@@ -20,10 +20,9 @@ namespace Antix.IO.FileSystem
         }
 
         public IObservable<IOEvent> Watch(
-            IOEntity entity, IOWatchSettings settings)
+            IOEntity entity, IIOWatchSettings settings)
         {
             if (entity == null) throw new ArgumentNullException("entity");
-            if (settings == null) throw new ArgumentNullException("settings");
 
             return Observable
                 .Create<IOEvent>(

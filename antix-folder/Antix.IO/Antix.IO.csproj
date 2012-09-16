@@ -69,6 +69,7 @@
     <Compile Include="FileSystem\IOFileSystem.cs" />
     <Compile Include="Events\IOMovedEvent.cs" />
     <Compile Include="Events\IOUpdatedEvent.cs" />
+    <Compile Include="IIOWatchSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IOWatchSettings.cs" />
   </ItemGroup>

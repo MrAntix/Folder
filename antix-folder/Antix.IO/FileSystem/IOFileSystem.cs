@@ -24,10 +24,10 @@ namespace Antix.IO.FileSystem
 
         IObservable<IOEvent> IIOSystem.Watch(IOEntity entity)
         {
-            return _watcher.Watch(entity, new IOWatchSettings());
+            return _watcher.Watch(entity, IOWatchSettings.Default);
         }
 
-        IObservable<IOEvent> IIOSystem.Watch(IOEntity entity, IOWatchSettings settings)
+        IObservable<IOEvent> IIOSystem.Watch(IOEntity entity, IIOWatchSettings settings)
         {
             return _watcher.Watch(entity, settings);
         }

@@ -14,6 +14,6 @@ namespace Antix.IO
         IOEntity GetInfo(string path);
 
         IObservable<IOEvent> Watch(IOEntity entity);
-        IObservable<IOEvent> Watch(IOEntity entity, IOWatchSettings settings);
+        IObservable<IOEvent> Watch(IOEntity entity, IIOWatchSettings settings);
     }
 }

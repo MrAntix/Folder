@@ -67,6 +67,7 @@
     <Compile Include="unit\using_a_file_system.cs" />
     <Compile Include="integration\watching_a_file_system_directory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="unit\using_watch_settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Antix.IO\Antix.IO.csproj">

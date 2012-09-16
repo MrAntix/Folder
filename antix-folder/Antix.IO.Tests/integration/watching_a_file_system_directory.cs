@@ -32,15 +32,17 @@ namespace Antix.IO.Tests.integration
             if (File.Exists(tempFile))
                 File.Delete(tempFile);
 
-            Thread.Sleep(100);
+            Thread.Sleep(10);
 
             sut.Watch(
                 new IODirectoryEntity
                     {
                         Path = tempPath
                     },
-                new IOWatchSettings()
-                )
+                new IOWatchSettings
+                    {
+                        Interval = TimeSpan.FromMilliseconds(500)
+                    })
                 .Subscribe(e =>
                                {
                                    Console.WriteLine(e);
@@ -58,7 +60,7 @@ namespace Antix.IO.Tests.integration
                 tempFile,
                 "Hello there");
 
-            Thread.Sleep(2100);
+            Thread.Sleep(600);
 
             Assert.True(observed);
         }
@@ -80,15 +82,17 @@ namespace Antix.IO.Tests.integration
                 tempFile,
                 "Hello");
 
-            Thread.Sleep(100);
+            Thread.Sleep(10);
 
             sut.Watch(
                 new IODirectoryEntity
                     {
                         Path = tempPath
                     },
-                new IOWatchSettings()
-                )
+                new IOWatchSettings
+                    {
+                        Interval = TimeSpan.FromMilliseconds(500)
+                    })
                 .Subscribe(e =>
                                {
                                    Console.WriteLine(e);
@@ -107,7 +111,7 @@ namespace Antix.IO.Tests.integration
                 tempFile,
                 "Hello there");
 
-            Thread.Sleep(2100);
+            Thread.Sleep(600);
 
             Assert.True(observed);
         }
@@ -131,15 +135,17 @@ namespace Antix.IO.Tests.integration
                 tempFile,
                 "Hello");
 
-            Thread.Sleep(100);
+            Thread.Sleep(10);
 
             sut.Watch(
                 new IODirectoryEntity
                     {
                         Path = tempDirectory
                     },
-                new IOWatchSettings()
-                )
+                new IOWatchSettings
+                    {
+                        Interval = TimeSpan.FromMilliseconds(500)
+                    })
                 .Subscribe(e =>
                                {
                                    Console.WriteLine(e);
@@ -161,7 +167,7 @@ namespace Antix.IO.Tests.integration
                 tempFileMoved,
                 "Hello There");
 
-            Thread.Sleep(2100);
+            Thread.Sleep(600);
 
             Assert.True(observed);
         }
@@ -183,15 +189,17 @@ namespace Antix.IO.Tests.integration
                 tempFile,
                 "Hello");
 
-            Thread.Sleep(100);
+            Thread.Sleep(10);
 
             sut.Watch(
                 new IODirectoryEntity
                     {
                         Path = tempPath
                     },
-                new IOWatchSettings()
-                )
+                new IOWatchSettings
+                    {
+                        Interval = TimeSpan.FromMilliseconds(500)
+                    })
                 .Subscribe(e =>
                                {
                                    Console.WriteLine(e);
@@ -204,7 +212,7 @@ namespace Antix.IO.Tests.integration
             File.Delete(
                 tempFile);
 
-            Thread.Sleep(2100);
+            Thread.Sleep(600);
 
             Assert.True(observed);
         }
@@ -223,7 +231,7 @@ namespace Antix.IO.Tests.integration
                     {
                         Path = tempDirectory
                     },
-                new IOWatchSettings()
+                IOWatchSettings.Default
                 )
                 .Subscribe(
                     Console.WriteLine,
@@ -232,7 +240,7 @@ namespace Antix.IO.Tests.integration
             // act
             Directory.Delete(tempDirectory);
 
-            Thread.Sleep(100);
+            Thread.Sleep(10);
 
             Assert.True(observed);
         }
