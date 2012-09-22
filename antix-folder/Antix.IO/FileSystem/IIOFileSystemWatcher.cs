@@ -7,6 +7,6 @@ namespace Antix.IO.FileSystem
     public interface IIOFileSystemWatcher
     {
         IObservable<IOEvent> Watch(
-            IOEntity entity, IIOWatchSettings settings);
+            IOEntity entity, IOWatchSettings settings);
     }
 }

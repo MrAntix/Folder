@@ -39,10 +39,9 @@ namespace Antix.IO.Tests.integration
                     {
                         Path = tempPath
                     },
-                new IOWatchSettings
-                    {
-                        Interval = TimeSpan.FromMilliseconds(500)
-                    })
+                IOWatchSettings
+                    .Create(x => { x.Interval = TimeSpan.FromMilliseconds(500); })
+                )
                 .Subscribe(e =>
                                {
                                    Console.WriteLine(e);
@@ -89,10 +88,9 @@ namespace Antix.IO.Tests.integration
                     {
                         Path = tempPath
                     },
-                new IOWatchSettings
-                    {
-                        Interval = TimeSpan.FromMilliseconds(500)
-                    })
+                IOWatchSettings
+                    .Create(x => { x.Interval = TimeSpan.FromMilliseconds(500); })
+                )
                 .Subscribe(e =>
                                {
                                    Console.WriteLine(e);
@@ -142,10 +140,9 @@ namespace Antix.IO.Tests.integration
                     {
                         Path = tempDirectory
                     },
-                new IOWatchSettings
-                    {
-                        Interval = TimeSpan.FromMilliseconds(500)
-                    })
+                IOWatchSettings
+                    .Create(x => { x.Interval = TimeSpan.FromMilliseconds(500); })
+                )
                 .Subscribe(e =>
                                {
                                    Console.WriteLine(e);
@@ -196,10 +193,9 @@ namespace Antix.IO.Tests.integration
                     {
                         Path = tempPath
                     },
-                new IOWatchSettings
-                    {
-                        Interval = TimeSpan.FromMilliseconds(500)
-                    })
+                IOWatchSettings
+                    .Create(x => { x.Interval = TimeSpan.FromMilliseconds(500); })
+                )
                 .Subscribe(e =>
                                {
                                    Console.WriteLine(e);

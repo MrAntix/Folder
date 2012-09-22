@@ -2,29 +2,75 @@ using System;
 
 namespace Antix.IO
 {
-    public class IOWatchSettings : IIOWatchSettings
+    public class IOWatchSettings : IEquatable<IOWatchSettings>
     {
-        public TimeSpan Interval { get; set; }
-        public bool IncludeSubdirectories { get; set; }
+        // Defaults
+        const int DefaultIntervalMilliseconds = 2000;
+        public const bool DefaultIncludeSubdirectories = true;
+        public static IOWatchSettings Default = new IOWatchSettings(new Parameters());
 
-        public IOWatchSettings()
+        // Properties
+        readonly TimeSpan _interval;
+        readonly bool _includeSubdirectories;
+
+        public TimeSpan Interval
         {
-            Interval = TimeSpan.FromSeconds(2);
-            IncludeSubdirectories = true;
+            get { return _interval; }
         }
 
-        public static IIOWatchSettings Default = new IOWatchSettings();
+        public bool IncludeSubdirectories
+        {
+            get { return _includeSubdirectories; }
+        }
+
+        // Private Constructors
+        IOWatchSettings(Parameters init)
+        {
+            _interval = init.Interval;
+            _includeSubdirectories = init.IncludeSubdirectories;
+        }
+
+        // Create Functions
+        public static IOWatchSettings Create()
+        {
+            return Default;
+        }
+
+        public static IOWatchSettings Create
+            (Action<Parameters> assign)
+        {
+            var po = new Parameters();
+            assign(po);
+
+            if (po.Interval <= TimeSpan.FromSeconds(0))
+                throw new ArgumentOutOfRangeException("Interval");
+
+            return new IOWatchSettings(po);
+        }
+
+        // Parameters object
+        public class Parameters
+        {
+            public Parameters()
+            {
+                Interval = TimeSpan.FromMilliseconds(DefaultIntervalMilliseconds);
+                IncludeSubdirectories = DefaultIncludeSubdirectories;
+            }
+
+            public TimeSpan Interval { get; set; }
+            public bool IncludeSubdirectories { get; set; }
+        }
 
         #region equals
 
-        bool IEquatable<IIOWatchSettings>.Equals(IIOWatchSettings other)
+        bool IEquatable<IOWatchSettings>.Equals(IOWatchSettings other)
         {
             return Equals(other);
         }
 
         public override bool Equals(object obj)
         {
-            var other = obj as IIOWatchSettings;
+            var other = obj as IOWatchSettings;
             return other != null &&
                 Interval.Equals(other.Interval)
                    && IncludeSubdirectories.Equals(other.IncludeSubdirectories);

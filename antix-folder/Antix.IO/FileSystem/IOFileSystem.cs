@@ -27,7 +27,7 @@ namespace Antix.IO.FileSystem
             return _watcher.Watch(entity, IOWatchSettings.Default);
         }
 
-        IObservable<IOEvent> IIOSystem.Watch(IOEntity entity, IIOWatchSettings settings)
+        IObservable<IOEvent> IIOSystem.Watch(IOEntity entity, IOWatchSettings settings)
         {
             return _watcher.Watch(entity, settings);
         }
