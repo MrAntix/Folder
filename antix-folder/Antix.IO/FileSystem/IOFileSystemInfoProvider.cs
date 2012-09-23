@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Antix.IO.Entities;
 using Antix.IO.Entities.Base;
 
@@ -8,25 +9,28 @@ namespace Antix.IO.FileSystem
 {
     public class IOFileSystemInfoProvider : IIOFileSystemInfoProvider
     {
-        IOCategoryEntity IIOFileSystemInfoProvider
-            .GetParentDirectory(IOEntity entity)
+        string IIOFileSystemInfoProvider
+            .GetParentDirectory(string path)
         {
-            return new IOCategoryEntity
-                       {
-                           Identifier = GetParentDirectory(entity.Identifier)
-                       };
+            return GetParentDirectory(path);
         }
 
-        IEnumerable<IOEntity> IIOFileSystemInfoProvider
-            .GetChildDirectoriesAndFiles(IOCategoryEntity entity)
+        IEnumerable<string> IIOFileSystemInfoProvider
+            .GetParentDirectories(string path)
         {
-            foreach (var path in GetChildDirectories(entity.Identifier))
+            return GetParentDirectories(path);
+        }
+
+        IEnumerable<string> IIOFileSystemInfoProvider
+            .GetChildDirectoriesAndFiles(string path)
+        {
+            foreach (var directoryPath in GetChildDirectories(path))
             {
-                yield return new IOCategoryEntity {Identifier = path};
+                yield return directoryPath;
             }
-            foreach (var path in GetChildFiles(entity.Identifier))
+            foreach (var filePath in GetChildFiles(path))
             {
-                yield return new IOFileEntity {Identifier = path};
+                yield return filePath;
             }
         }
 
@@ -38,10 +42,36 @@ namespace Antix.IO.FileSystem
             return GetEntity(path);
         }
 
+        IOFileEntity IIOFileSystemInfoProvider.GetFileEntity(string path)
+        {
+            return GetFileEntity(path);
+        }
+
+        IOCategoryEntity IIOFileSystemInfoProvider.GetCategoryEntity(string path)
+        {
+            return GetCategoryEntity(path);
+        }
+
+        IONullEntity IIOFileSystemInfoProvider.GetNullEntity(string path)
+        {
+            return GetNullEntity(path);
+        }
+
+        // private routines
+
         string GetParentDirectory(string path)
         {
             return
                 Path.GetDirectoryName(path);
+        }
+
+        IEnumerable<string> GetParentDirectories(string path)
+        {
+            var parent = path;
+            while ((parent = Path.GetDirectoryName(parent)) != null)
+            {
+                yield return parent;
+            }
         }
 
         IEnumerable<string> GetChildDirectories(string path)
@@ -58,10 +88,25 @@ namespace Antix.IO.FileSystem
         IOEntity GetEntity(string path)
         {
             return File.Exists(path)
-                       ? new IOFileEntity {Identifier = path}
+                       ? GetFileEntity(path)
                        : Directory.Exists(path)
-                             ? (IOEntity) new IOCategoryEntity {Identifier = path}
-                             : new IONullEntity {Identifier = path};
+                             ? (IOEntity) GetCategoryEntity(path)
+                             : GetNullEntity(path);
+        }
+
+        IOFileEntity GetFileEntity(string path)
+        {
+            return new IOFileEntity {Identifier = path};
+        }
+
+        IOCategoryEntity GetCategoryEntity(string path)
+        {
+            return new IOCategoryEntity {Identifier = path};
+        }
+
+        IONullEntity GetNullEntity(string path)
+        {
+            return new IONullEntity {Identifier = path};
         }
     }
 }

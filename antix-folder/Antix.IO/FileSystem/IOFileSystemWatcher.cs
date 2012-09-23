@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using Antix.IO.Entities.Base;
 using Antix.IO.Events;
@@ -92,7 +95,8 @@ namespace Antix.IO.FileSystem
                         });
         }
 
-        IObservable<FileSystemEventArgs> GetFileSystemWatcherObservables(FileSystemWatcher fileSystemWatcher)
+        IObservable<FileSystemEventArgs> GetFileSystemWatcherObservables(
+            FileSystemWatcher fileSystemWatcher)
         {
             if (fileSystemWatcher == null) throw new ArgumentNullException("fileSystemWatcher");
 
@@ -100,21 +104,54 @@ namespace Antix.IO.FileSystem
                        {
                            Observable
                                .FromEventPattern<FileSystemEventArgs>(fileSystemWatcher, "Created")
-                               .Select(ev => ev.EventArgs),
+                               .SelectMany(evp=>GetDirectoryChangedEventArgs(evp, fileSystemWatcher.IncludeSubdirectories, fileSystemWatcher.Path)),
                            Observable
                                .FromEventPattern<FileSystemEventArgs>(fileSystemWatcher, "Changed")
-                               .Select(ev => ev.EventArgs),
+                               .SelectMany(evp=>GetDirectoryChangedEventArgs(evp, fileSystemWatcher.IncludeSubdirectories, fileSystemWatcher.Path)),
                            Observable
                                .FromEventPattern<RenamedEventArgs>(fileSystemWatcher, "Renamed")
-                               .Select(ev => ev.EventArgs),
+                               .SelectMany(evp=>GetDirectoryChangedEventArgs(evp, fileSystemWatcher.IncludeSubdirectories, fileSystemWatcher.Path)),
                            Observable
                                .FromEventPattern<FileSystemEventArgs>(fileSystemWatcher, "Deleted")
-                               .Select(ev => ev.EventArgs),
+                               .SelectMany(evp=>GetDirectoryChangedEventArgs(evp, fileSystemWatcher.IncludeSubdirectories, fileSystemWatcher.Path)),
                            Observable
                                .FromEventPattern<ErrorEventArgs>(fileSystemWatcher, "Error")
                                .SelectMany(ev => Observable.Throw<FileSystemEventArgs>(ev.EventArgs.GetException()))
                        }
                 .Merge();
+        }
+
+
+        IEnumerable<FileSystemEventArgs> GetDirectoryChangedEventArgs(
+            EventPattern<FileSystemEventArgs> eventPattern, bool bubble, string rootPath)
+        {
+            yield return eventPattern.EventArgs;
+
+            if (!bubble) yield break;
+
+            // bubble to parents
+            foreach (var directory in  _fileSystemInfoProvider
+                .GetParentDirectories(eventPattern.EventArgs.FullPath))
+            {
+                var parentDirectory = Path.GetDirectoryName(directory);
+                if (parentDirectory != null)
+                    yield return new FileSystemEventArgs(
+                        WatcherChangeTypes.Changed,
+                        parentDirectory,
+                        Path.GetFileName(directory) + "\\");
+
+                if (rootPath.Length > directory.Length) yield break;
+            }
+        }
+
+        IEnumerable<FileSystemEventArgs> GetDirectoryChangedEventArgs(
+            EventPattern<RenamedEventArgs> eventPattern, bool bubble, string rootPath)
+        {
+            return GetDirectoryChangedEventArgs(
+                new EventPattern<FileSystemEventArgs>(eventPattern.Sender, eventPattern.EventArgs),
+                bubble, rootPath);
+
+            // bubble to parents
         }
     }
 }

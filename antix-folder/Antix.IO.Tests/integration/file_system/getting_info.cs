@@ -1,11 +1,13 @@
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Antix.IO.Entities;
 using Antix.IO.FileSystem;
 using Xunit;
 
 namespace Antix.IO.Tests.integration.file_system
 {
-    public class getting_entities
+    public class getting_info
     {
         static IIOFileSystemInfoProvider GetServiceUnderTest()
         {
@@ -53,20 +55,34 @@ namespace Antix.IO.Tests.integration.file_system
         public void gets_parent_directory()
         {
             var sut = GetServiceUnderTest();
-            var entity = sut.GetEntity(Path.GetTempFileName());
+            var path = Path.GetTempFileName();
 
-            var result = sut.GetParentDirectory(entity);
+            var result = sut.GetParentDirectory(path);
 
-            Assert.IsType<IOCategoryEntity>(result);
+            Assert.Equal(Path.GetDirectoryName(path), result);
+        }
+
+        [Fact]
+        public void gets_parent_directories()
+        {
+            var sut = GetServiceUnderTest();
+            var path = Path.GetTempFileName();
+
+            var result = sut.GetParentDirectories(path);
+
+            foreach(var directoryPath in result)
+                Debug.WriteLine(directoryPath);
+
+            Assert.Equal(path.Split('\\').Count()-1, result.Count());
         }
 
         [Fact]
         public void gets_child_files_and_directories()
         {
             var sut = GetServiceUnderTest();
-            var entity = (IOCategoryEntity)sut.GetEntity(Path.GetTempPath());
+            var path = Path.GetTempPath();
 
-            var result = sut.GetChildDirectoriesAndFiles(entity);
+            var result = sut.GetChildDirectoriesAndFiles(path);
 
             Assert.NotNull(result);
         }

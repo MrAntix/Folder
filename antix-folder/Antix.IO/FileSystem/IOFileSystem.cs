@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Antix.IO.Entities;
 using Antix.IO.Entities.Base;
 using Antix.IO.Events.Base;
@@ -26,12 +27,21 @@ namespace Antix.IO.FileSystem
 
         IEnumerable<IOCategoryEntity> IIOSystem.GetParentCategories(IOEntity entity)
         {
-            return new[] {_fileSystemInfoProvider.GetParentDirectory(entity)};
+            return new[]
+                       {
+                           (IOCategoryEntity) _fileSystemInfoProvider
+                                                  .GetEntity(
+                                                      _fileSystemInfoProvider
+                                                          .GetParentDirectory(entity.Identifier))
+                       };
         }
 
         IEnumerable<IOEntity> IIOSystem.GetChildEntities(IOCategoryEntity entity)
         {
-            return _fileSystemInfoProvider.GetChildDirectoriesAndFiles(entity);
+            return
+                _fileSystemInfoProvider
+                    .GetChildDirectoriesAndFiles(entity.Identifier)
+                    .Select(_fileSystemInfoProvider.GetEntity);
         }
 
         IObservable<IOEvent> IIOSystem.Watch(IOEntity entity)

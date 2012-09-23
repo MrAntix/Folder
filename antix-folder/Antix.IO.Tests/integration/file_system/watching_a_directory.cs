@@ -46,8 +46,8 @@ namespace Antix.IO.Tests.integration.file_system
                                {
                                    Console.WriteLine(e);
 
-                                   observed = e.Entity.Identifier == tempFile
-                                              && e is IOCreatedEvent;
+                                   if (e.Entity.Identifier == tempFile)
+                                       observed = e is IOCreatedEvent;
                                });
 
             // act
@@ -95,8 +95,8 @@ namespace Antix.IO.Tests.integration.file_system
                                {
                                    Console.WriteLine(e);
 
-                                   observed = e.Entity.Identifier == tempFile
-                                              && e is IOUpdatedEvent;
+                                   if (e.Entity.Identifier == tempFile)
+                                       observed = e is IOUpdatedEvent;
                                });
 
             // act
@@ -200,8 +200,8 @@ namespace Antix.IO.Tests.integration.file_system
                                {
                                    Console.WriteLine(e);
 
-                                   observed = e.Entity.Identifier == tempFile
-                                              && e is IODeletedEvent;
+                                   if (e.Entity.Identifier == tempFile)
+                                       observed = e is IODeletedEvent;
                                });
 
             // act
@@ -237,6 +237,50 @@ namespace Antix.IO.Tests.integration.file_system
             Directory.Delete(tempDirectory);
 
             Thread.Sleep(10);
+
+            Assert.True(observed);
+        }
+
+        [Fact]
+        public void file_changes_bubble_up()
+        {
+            var sut = GetServiceUnderTest();
+
+            var observed = false;
+
+            var rootPath = Path.GetTempPath();
+            Console.WriteLine("root: {0}", rootPath);
+
+            var tempPath = Path.Combine(rootPath, "update_bubble");
+            if (!Directory.Exists(tempPath))
+                Directory.CreateDirectory(tempPath);
+
+            var tempFile = Path.Combine(tempPath, "file.tmp");
+
+            Thread.Sleep(10);
+
+            sut.Watch(
+                new IOCategoryEntity
+                    {
+                        Identifier = tempPath
+                    },
+                IOWatchSettings
+                    .Create(x => { x.Interval = TimeSpan.FromMilliseconds(500); })
+                )
+                .Subscribe(e =>
+                               {
+                                   Console.WriteLine(e);
+
+                                   observed = e.Entity.Identifier == rootPath
+                                              && e is IOUpdatedEvent;
+                               });
+
+            // act
+            File.WriteAllText(
+                tempFile,
+                "Hello there");
+
+            Thread.Sleep(600);
 
             Assert.True(observed);
         }

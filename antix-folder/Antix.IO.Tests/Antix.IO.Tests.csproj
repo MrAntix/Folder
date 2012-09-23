@@ -63,7 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="integration\file_system\getting_entities.cs" />
+    <Compile Include="integration\file_system\getting_info.cs" />
     <Compile Include="unit\file_system\using_a_file_system.cs" />
     <Compile Include="integration\file_system\watching_a_directory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
