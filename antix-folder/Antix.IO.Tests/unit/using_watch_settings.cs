@@ -21,13 +21,5 @@ namespace Antix.IO.Tests.unit
                 IOWatchSettings.Default.IncludeSubCategories,
                 watchSettings.IncludeSubCategories);
         }
-
-        [Fact]
-        public void new_equals_default()
-        {
-            var watchSettings = IOWatchSettings.Create();
-
-            Assert.Equal(IOWatchSettings.Default, watchSettings);
-        }
     }
 }
