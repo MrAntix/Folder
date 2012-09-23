@@ -14,7 +14,7 @@ namespace Antix.IO.FileSystem
             return File.Exists(path)
                        ? new IOFileEntity {Path = path}
                        : Directory.Exists(path)
-                             ? (IOEntity) new IODirectoryEntity {Path = path}
+                             ? (IOEntity) new IOCategoryEntity {Path = path}
                              : new IONullEntity {Path = path};
         }
     }

@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Base\IOEntity.cs" />
-    <Compile Include="Entities\IODirectoryEntity.cs" />
+    <Compile Include="Entities\IOCategoryEntity.cs" />
     <Compile Include="Entities\IOFileEntity.cs" />
     <Compile Include="Entities\IONullEntity.cs" />
     <Compile Include="FileSystem\IIOFileSystemInfoProvider.cs" />

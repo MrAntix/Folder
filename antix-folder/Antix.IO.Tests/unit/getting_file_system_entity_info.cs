@@ -21,7 +21,7 @@ namespace Antix.IO.Tests.unit
 
             var result = sut.GetInfo(path);
 
-            Assert.IsType<IODirectoryEntity>(result);
+            Assert.IsType<IOCategoryEntity>(result);
         }
 
         [Fact]

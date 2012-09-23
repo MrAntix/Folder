@@ -35,7 +35,7 @@ namespace Antix.IO.Tests.integration
             Thread.Sleep(10);
 
             sut.Watch(
-                new IODirectoryEntity
+                new IOCategoryEntity
                     {
                         Path = tempPath
                     },
@@ -84,7 +84,7 @@ namespace Antix.IO.Tests.integration
             Thread.Sleep(10);
 
             sut.Watch(
-                new IODirectoryEntity
+                new IOCategoryEntity
                     {
                         Path = tempPath
                     },
@@ -136,7 +136,7 @@ namespace Antix.IO.Tests.integration
             Thread.Sleep(10);
 
             sut.Watch(
-                new IODirectoryEntity
+                new IOCategoryEntity
                     {
                         Path = tempDirectory
                     },
@@ -189,7 +189,7 @@ namespace Antix.IO.Tests.integration
             Thread.Sleep(10);
 
             sut.Watch(
-                new IODirectoryEntity
+                new IOCategoryEntity
                     {
                         Path = tempPath
                     },
@@ -223,7 +223,7 @@ namespace Antix.IO.Tests.integration
 
             var sut = GetServiceUnderTest();
             sut.Watch(
-                new IODirectoryEntity
+                new IOCategoryEntity
                     {
                         Path = tempDirectory
                     },
