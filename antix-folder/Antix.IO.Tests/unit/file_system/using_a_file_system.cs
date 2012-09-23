@@ -40,7 +40,7 @@ namespace Antix.IO.Tests.unit
             const string path = "An Identifier";
             var mock = GetInfoProviderMock();
             mock
-                .Setup(o => o.GetInfo(path))
+                .Setup(o => o.GetEntity(path))
                 .Verifiable();
 
             var sut = GetServiceUnderTest(mock);

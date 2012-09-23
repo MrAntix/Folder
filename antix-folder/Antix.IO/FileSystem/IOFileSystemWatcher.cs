@@ -55,7 +55,7 @@ namespace Antix.IO.FileSystem
 
                                                            observer.OnNext(
                                                                new IODeletedEvent(
-                                                                   _fileSystemInfoProvider.GetInfo(path)));
+                                                                   _fileSystemInfoProvider.GetEntity(path)));
                                                        }
                                                        else
                                                        {
@@ -64,9 +64,9 @@ namespace Antix.IO.FileSystem
                                                                // raise the rename on the old file
                                                                observer.OnNext(
                                                                    new IOMovedEvent(
-                                                                       _fileSystemInfoProvider.GetInfo(
+                                                                       _fileSystemInfoProvider.GetEntity(
                                                                            firstRenamed.OldFullPath),
-                                                                       _fileSystemInfoProvider.GetInfo(
+                                                                       _fileSystemInfoProvider.GetEntity(
                                                                            firstRenamed.FullPath)));
                                                            }
 
@@ -74,13 +74,13 @@ namespace Antix.IO.FileSystem
                                                            {
                                                                observer.OnNext(
                                                                    new IOCreatedEvent(
-                                                                       _fileSystemInfoProvider.GetInfo(last.FullPath)));
+                                                                       _fileSystemInfoProvider.GetEntity(last.FullPath)));
                                                            }
                                                            else
                                                            {
                                                                observer.OnNext(
                                                                    new IOUpdatedEvent(
-                                                                       _fileSystemInfoProvider.GetInfo(first.FullPath))
+                                                                       _fileSystemInfoProvider.GetEntity(first.FullPath))
                                                                    );
                                                            }
                                                        }

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Antix.IO.Entities;
 using Antix.IO.Entities.Base;
 using Antix.IO.Events.Base;
 
@@ -19,7 +21,17 @@ namespace Antix.IO.FileSystem
 
         IOEntity IIOSystem.GetEntity(string identifier)
         {
-            return _fileSystemInfoProvider.GetInfo(identifier);
+            return _fileSystemInfoProvider.GetEntity(identifier);
+        }
+
+        IEnumerable<IOCategoryEntity> IIOSystem.GetParentCategories(IOEntity entity)
+        {
+            return _fileSystemInfoProvider.GetParentCategories(entity);
+        }
+
+        IEnumerable<IOEntity> IIOSystem.GetChildEntities(IOCategoryEntity entity)
+        {
+            return _fileSystemInfoProvider.GetChildEntities(entity);
         }
 
         IObservable<IOEvent> IIOSystem.Watch(IOEntity entity)

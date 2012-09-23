@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Antix.IO.Entities;
 using Antix.IO.Entities.Base;
 using Antix.IO.Events.Base;
 
@@ -17,6 +19,20 @@ namespace Antix.IO
         /// <param name="identifier">Identifier</param>
         /// <returns>IO entiy</returns>
         IOEntity GetEntity(string identifier);
+
+        /// <summary>
+        /// <para>Get the parent categories for a given entity</para>
+        /// </summary>
+        /// <param name="entity">Entity</param>
+        /// <returns>Parent Categories</returns>
+        IEnumerable<IOCategoryEntity> GetParentCategories(IOEntity entity);
+
+        /// <summary>
+        /// <para>Get the child entities for a given entity</para>
+        /// </summary>
+        /// <param name="entity">Category Entity</param>
+        /// <returns>Child entities</returns>
+        IEnumerable<IOEntity> GetChildEntities(IOCategoryEntity entity);
 
         /// <summary>
         /// <para>Watch for changes on the entity passed</para>

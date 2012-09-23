@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Antix.IO.Tests.integration
 {
-    public class watching_a_file_system_directory
+    public class watching_a_directory
     {
         static IOFileSystemWatcher GetServiceUnderTest()
         {

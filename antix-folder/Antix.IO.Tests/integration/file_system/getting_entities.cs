@@ -13,25 +13,25 @@ namespace Antix.IO.Tests.unit
         }
 
         [Fact]
-        public void gets_info_on_a_directory()
+        public void gets_a_directory_entity()
         {
             var path = Path.GetTempPath();
 
             var sut = GetServiceUnderTest();
 
-            var result = sut.GetInfo(path);
+            var result = sut.GetEntity(path);
 
             Assert.IsType<IOCategoryEntity>(result);
         }
 
         [Fact]
-        public void gets_info_on_a_file()
+        public void gets_a_file_entity()
         {
             var path = Path.GetTempFileName();
 
             var sut = GetServiceUnderTest();
 
-            var result = sut.GetInfo(path);
+            var result = sut.GetEntity(path);
 
             Assert.IsType<IOFileEntity>(result);
         }
@@ -44,7 +44,7 @@ namespace Antix.IO.Tests.unit
 
             var sut = GetServiceUnderTest();
 
-            var result = sut.GetInfo(path);
+            var result = sut.GetEntity(path);
 
             Assert.IsType<IONullEntity>(result);
         }
