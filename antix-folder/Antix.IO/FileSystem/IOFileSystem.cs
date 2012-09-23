@@ -17,9 +17,9 @@ namespace Antix.IO.FileSystem
             _fileSystemInfoProvider = fileSystemInfoProvider;
         }
 
-        IOEntity IIOSystem.GetInfo(string path)
+        IOEntity IIOSystem.GetEntity(string identifier)
         {
-            return _fileSystemInfoProvider.GetInfo(path);
+            return _fileSystemInfoProvider.GetInfo(identifier);
         }
 
         IObservable<IOEvent> IIOSystem.Watch(IOEntity entity)

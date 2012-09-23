@@ -21,7 +21,7 @@ namespace Antix.IO.Events.Base
 
         public override string ToString()
         {
-            return string.Format("{0}: {1}", GetType().Name, Entity.Path);
+            return string.Format("{0}: {1}", GetType().Name, Entity.Identifier);
         }
     }
 }

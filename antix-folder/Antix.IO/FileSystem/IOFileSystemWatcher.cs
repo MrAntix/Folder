@@ -29,10 +29,10 @@ namespace Antix.IO.FileSystem
                     observer
                     =>
                         {
-                            var fileSystemWatcher = new FileSystemWatcher(entity.Path)
+                            var fileSystemWatcher = new FileSystemWatcher(entity.Identifier)
                                                         {
                                                             EnableRaisingEvents = true,
-                                                            IncludeSubdirectories = settings.IncludeSubdirectories
+                                                            IncludeSubdirectories = settings.IncludeSubCategories
                                                         };
 
                             GetFileSystemWatcherObservables(fileSystemWatcher)

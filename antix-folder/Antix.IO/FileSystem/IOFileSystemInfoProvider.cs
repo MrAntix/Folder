@@ -9,13 +9,13 @@ namespace Antix.IO.FileSystem
     {
         public IOEntity GetInfo(string path)
         {
-            if (string.IsNullOrWhiteSpace(path)) throw new ArgumentException("path");
+            if (string.IsNullOrWhiteSpace(path)) throw new ArgumentException("identifier");
 
             return File.Exists(path)
-                       ? new IOFileEntity {Path = path}
+                       ? new IOFileEntity {Identifier = path}
                        : Directory.Exists(path)
-                             ? (IOEntity) new IOCategoryEntity {Path = path}
-                             : new IONullEntity {Path = path};
+                             ? (IOEntity) new IOCategoryEntity {Identifier = path}
+                             : new IONullEntity {Identifier = path};
         }
     }
 }

@@ -18,8 +18,8 @@ namespace Antix.IO.Tests.unit
 
             Assert.Equal(value, watchSettings.Interval);
             Assert.Equal(
-                IOWatchSettings.Default.IncludeSubdirectories,
-                watchSettings.IncludeSubdirectories);
+                IOWatchSettings.Default.IncludeSubCategories,
+                watchSettings.IncludeSubCategories);
         }
 
         [Fact]

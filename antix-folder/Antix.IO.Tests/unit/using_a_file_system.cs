@@ -37,7 +37,7 @@ namespace Antix.IO.Tests.unit
         [Fact]
         public void get_info_calls_provider()
         {
-            const string path = "A Path";
+            const string path = "An Identifier";
             var mock = GetInfoProviderMock();
             mock
                 .Setup(o => o.GetInfo(path))
@@ -45,7 +45,7 @@ namespace Antix.IO.Tests.unit
 
             var sut = GetServiceUnderTest(mock);
 
-            sut.GetInfo(path);
+            sut.GetEntity(path);
 
             mock.VerifyAll();
         }
@@ -55,7 +55,7 @@ namespace Antix.IO.Tests.unit
         {
             var entity = new IOFileEntity
                              {
-                                 Path = "A Path"
+                                 Identifier = "An Identifier"
                              };
             var mock = GetWatcherMock();
             mock
@@ -74,7 +74,7 @@ namespace Antix.IO.Tests.unit
         {
             var entity = new IOFileEntity
             {
-                Path = "A Path"
+                Identifier = "An Identifier"
             };
             var mock = GetWatcherMock();
             mock
@@ -93,7 +93,7 @@ namespace Antix.IO.Tests.unit
         {
             var entity = new IOFileEntity
                              {
-                                 Path = "A Path"
+                                 Identifier = "An Identifier"
                              };
             var mock = GetWatcherMock();
             mock

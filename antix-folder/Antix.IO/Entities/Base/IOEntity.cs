@@ -2,6 +2,6 @@ namespace Antix.IO.Entities.Base
 {
     public abstract class IOEntity
     {
-        public string Path { get; set; }
+        public string Identifier { get; set; }
     }
 }

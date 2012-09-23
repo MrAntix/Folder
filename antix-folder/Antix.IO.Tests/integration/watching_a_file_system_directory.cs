@@ -37,7 +37,7 @@ namespace Antix.IO.Tests.integration
             sut.Watch(
                 new IOCategoryEntity
                     {
-                        Path = tempPath
+                        Identifier = tempPath
                     },
                 IOWatchSettings
                     .Create(x => { x.Interval = TimeSpan.FromMilliseconds(500); })
@@ -46,7 +46,7 @@ namespace Antix.IO.Tests.integration
                                {
                                    Console.WriteLine(e);
 
-                                   observed = e.Entity.Path == tempFile
+                                   observed = e.Entity.Identifier == tempFile
                                               && e is IOCreatedEvent;
                                });
 
@@ -86,7 +86,7 @@ namespace Antix.IO.Tests.integration
             sut.Watch(
                 new IOCategoryEntity
                     {
-                        Path = tempPath
+                        Identifier = tempPath
                     },
                 IOWatchSettings
                     .Create(x => { x.Interval = TimeSpan.FromMilliseconds(500); })
@@ -95,7 +95,7 @@ namespace Antix.IO.Tests.integration
                                {
                                    Console.WriteLine(e);
 
-                                   observed = e.Entity.Path == tempFile
+                                   observed = e.Entity.Identifier == tempFile
                                               && e is IOUpdatedEvent;
                                });
 
@@ -138,7 +138,7 @@ namespace Antix.IO.Tests.integration
             sut.Watch(
                 new IOCategoryEntity
                     {
-                        Path = tempDirectory
+                        Identifier = tempDirectory
                     },
                 IOWatchSettings
                     .Create(x => { x.Interval = TimeSpan.FromMilliseconds(500); })
@@ -149,8 +149,8 @@ namespace Antix.IO.Tests.integration
 
                                    var movedEvent = e as IOMovedEvent;
                                    if (movedEvent != null
-                                       && movedEvent.Entity.Path == tempFile
-                                       && movedEvent.NewEntity.Path == tempFileMoved)
+                                       && movedEvent.Entity.Identifier == tempFile
+                                       && movedEvent.NewEntity.Identifier == tempFileMoved)
                                        observed = true;
                                });
 
@@ -191,7 +191,7 @@ namespace Antix.IO.Tests.integration
             sut.Watch(
                 new IOCategoryEntity
                     {
-                        Path = tempPath
+                        Identifier = tempPath
                     },
                 IOWatchSettings
                     .Create(x => { x.Interval = TimeSpan.FromMilliseconds(500); })
@@ -200,7 +200,7 @@ namespace Antix.IO.Tests.integration
                                {
                                    Console.WriteLine(e);
 
-                                   observed = e.Entity.Path == tempFile
+                                   observed = e.Entity.Identifier == tempFile
                                               && e is IODeletedEvent;
                                });
 
@@ -225,7 +225,7 @@ namespace Antix.IO.Tests.integration
             sut.Watch(
                 new IOCategoryEntity
                     {
-                        Path = tempDirectory
+                        Identifier = tempDirectory
                     },
                 IOWatchSettings.Default
                 )

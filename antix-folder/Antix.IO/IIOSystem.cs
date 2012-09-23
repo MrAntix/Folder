@@ -11,9 +11,26 @@ namespace Antix.IO
 
         //Task Copy(IOFileEntity file, IOFileEntity fileTo);
 
-        IOEntity GetInfo(string path);
+        /// <summary>
+        /// <para>Get an entity in the IO System based on an appropriate identifier</para>
+        /// </summary>
+        /// <param name="identifier">Identifier</param>
+        /// <returns>IO entiy</returns>
+        IOEntity GetEntity(string identifier);
 
+        /// <summary>
+        /// <para>Watch for changes on the entity passed</para>
+        /// </summary>
+        /// <param name="entity">Entity</param>
+        /// <returns>Observable Events</returns>
         IObservable<IOEvent> Watch(IOEntity entity);
+
+        /// <summary>
+        /// <para>Watch for changes on the entity passed</para>
+        /// </summary>
+        /// <param name="entity">Entity</param>
+        /// <param name="settings">Settings for the watch</param>
+        /// <returns>Observable Events</returns>
         IObservable<IOEvent> Watch(IOEntity entity, IOWatchSettings settings);
     }
 }
