@@ -8,16 +8,26 @@ namespace Antix.IO.FileSystem
 {
     public class IOFileSystemInfoProvider : IIOFileSystemInfoProvider
     {
-        IEnumerable<IOCategoryEntity> IIOFileSystemInfoProvider
-            .GetParentCategories(IOEntity entity)
+        IOCategoryEntity IIOFileSystemInfoProvider
+            .GetParentDirectory(IOEntity entity)
         {
-            throw new NotImplementedException();
+            return new IOCategoryEntity
+                       {
+                           Identifier = GetParentDirectory(entity.Identifier)
+                       };
         }
 
         IEnumerable<IOEntity> IIOFileSystemInfoProvider
-            .GetChildEntities(IOCategoryEntity entity)
+            .GetChildDirectoriesAndFiles(IOCategoryEntity entity)
         {
-            throw new NotImplementedException();
+            foreach (var path in GetChildDirectories(entity.Identifier))
+            {
+                yield return new IOCategoryEntity {Identifier = path};
+            }
+            foreach (var path in GetChildFiles(entity.Identifier))
+            {
+                yield return new IOFileEntity {Identifier = path};
+            }
         }
 
         IOEntity IIOFileSystemInfoProvider
@@ -25,6 +35,28 @@ namespace Antix.IO.FileSystem
         {
             if (string.IsNullOrWhiteSpace(path)) throw new ArgumentException("identifier");
 
+            return GetEntity(path);
+        }
+
+        string GetParentDirectory(string path)
+        {
+            return
+                Path.GetDirectoryName(path);
+        }
+
+        IEnumerable<string> GetChildDirectories(string path)
+        {
+            return Directory.GetDirectories(path);
+        }
+
+        IEnumerable<string> GetChildFiles(string path)
+        {
+            return Directory.GetFiles(path);
+        }
+
+
+        IOEntity GetEntity(string path)
+        {
             return File.Exists(path)
                        ? new IOFileEntity {Identifier = path}
                        : Directory.Exists(path)

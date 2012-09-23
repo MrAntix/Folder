@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Antix.IO.Tests.integration.file_system
 {
-    public class getting_file_system_entity_info
+    public class getting_entities
     {
         static IIOFileSystemInfoProvider GetServiceUnderTest()
         {
@@ -47,6 +47,28 @@ namespace Antix.IO.Tests.integration.file_system
             var result = sut.GetEntity(path);
 
             Assert.IsType<IONullEntity>(result);
+        }
+
+        [Fact]
+        public void gets_parent_directory()
+        {
+            var sut = GetServiceUnderTest();
+            var entity = sut.GetEntity(Path.GetTempFileName());
+
+            var result = sut.GetParentDirectory(entity);
+
+            Assert.IsType<IOCategoryEntity>(result);
+        }
+
+        [Fact]
+        public void gets_child_files_and_directories()
+        {
+            var sut = GetServiceUnderTest();
+            var entity = (IOCategoryEntity)sut.GetEntity(Path.GetTempPath());
+
+            var result = sut.GetChildDirectoriesAndFiles(entity);
+
+            Assert.NotNull(result);
         }
     }
 }

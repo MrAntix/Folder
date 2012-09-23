@@ -26,12 +26,12 @@ namespace Antix.IO.FileSystem
 
         IEnumerable<IOCategoryEntity> IIOSystem.GetParentCategories(IOEntity entity)
         {
-            return _fileSystemInfoProvider.GetParentCategories(entity);
+            return new[] {_fileSystemInfoProvider.GetParentDirectory(entity)};
         }
 
         IEnumerable<IOEntity> IIOSystem.GetChildEntities(IOCategoryEntity entity)
         {
-            return _fileSystemInfoProvider.GetChildEntities(entity);
+            return _fileSystemInfoProvider.GetChildDirectoriesAndFiles(entity);
         }
 
         IObservable<IOEvent> IIOSystem.Watch(IOEntity entity)

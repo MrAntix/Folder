@@ -11,14 +11,14 @@ namespace Antix.IO.FileSystem
         /// </summary>
         /// <param name="entity"> Entity </param>
         /// <returns> Parent Categories </returns>
-        IEnumerable<IOCategoryEntity> GetParentCategories(IOEntity entity);
+        IOCategoryEntity GetParentDirectory(IOEntity entity);
 
         /// <summary>
         ///   <para> Get the child entities for a given entity </para>
         /// </summary>
         /// <param name="entity"> Category Entity </param>
         /// <returns> Child entities </returns>
-        IEnumerable<IOEntity> GetChildEntities(IOCategoryEntity entity);
+        IEnumerable<IOEntity> GetChildDirectoriesAndFiles(IOCategoryEntity entity);
 
         /// <summary>
         ///   <para> Get Entity </para>
