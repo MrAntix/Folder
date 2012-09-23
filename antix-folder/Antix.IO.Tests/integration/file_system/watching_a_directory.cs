@@ -6,7 +6,7 @@ using Antix.IO.Events;
 using Antix.IO.FileSystem;
 using Xunit;
 
-namespace Antix.IO.Tests.integration
+namespace Antix.IO.Tests.integration.file_system
 {
     public class watching_a_directory
     {

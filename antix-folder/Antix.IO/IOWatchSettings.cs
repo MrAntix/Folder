@@ -3,7 +3,7 @@ using System;
 namespace Antix.IO
 {
     /// <summary>
-    /// <para>Watch settings object</para>
+    ///   <para> Watch settings object </para>
     /// </summary>
     public class IOWatchSettings : IEquatable<IOWatchSettings>
     {
@@ -17,7 +17,7 @@ namespace Antix.IO
         readonly bool _includeSubCategories;
 
         /// <summary>
-        /// <para>Time to group events with</para>
+        ///   <para> Time to group events with </para>
         /// </summary>
         public TimeSpan Interval
         {
@@ -25,7 +25,7 @@ namespace Antix.IO
         }
 
         /// <summary>
-        /// <para>Watch sub-categories as well</para>
+        ///   <para> Watch sub-categories as well </para>
         /// </summary>
         public bool IncludeSubCategories
         {
@@ -40,11 +40,11 @@ namespace Antix.IO
         }
 
         /// <summary>
-        /// <para>Create watch settings</para>
-        /// <para><see cref="IOWatchSettings.Default"/> for a default settings object</para>
+        ///   <para> Create watch settings </para>
+        ///   <para> <see cref="IOWatchSettings.Default" /> for a default settings object </para>
         /// </summary>
-        /// <param name="assign">Parameters assignment delegate</param>
-        /// <returns>New settings object</returns>
+        /// <param name="assign"> Parameters assignment delegate </param>
+        /// <returns> New settings object </returns>
         public static IOWatchSettings Create
             (Action<Parameters> assign)
         {
@@ -58,7 +58,7 @@ namespace Antix.IO
         }
 
         /// <summary>
-        /// <para>Parameters object</para>
+        ///   <para> Parameters object </para>
         /// </summary>
         public class Parameters
         {
@@ -83,7 +83,7 @@ namespace Antix.IO
         {
             var other = obj as IOWatchSettings;
             return other != null &&
-                Interval.Equals(other.Interval)
+                   Interval.Equals(other.Interval)
                    && IncludeSubCategories.Equals(other.IncludeSubCategories);
         }
 

@@ -3,7 +3,7 @@ using Antix.IO.FileSystem;
 using Moq;
 using Xunit;
 
-namespace Antix.IO.Tests.unit
+namespace Antix.IO.Tests.unit.file_system
 {
     public class using_a_file_system
     {
@@ -73,9 +73,9 @@ namespace Antix.IO.Tests.unit
         public void watch_without_settings_passes_default()
         {
             var entity = new IOFileEntity
-            {
-                Identifier = "An Identifier"
-            };
+                             {
+                                 Identifier = "An Identifier"
+                             };
             var mock = GetWatcherMock();
             mock
                 .Setup(o => o.Watch(entity, IOWatchSettings.Default))

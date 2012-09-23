@@ -3,7 +3,7 @@ using Antix.IO.Entities;
 using Antix.IO.FileSystem;
 using Xunit;
 
-namespace Antix.IO.Tests.unit
+namespace Antix.IO.Tests.integration.file_system
 {
     public class getting_file_system_entity_info
     {

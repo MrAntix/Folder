@@ -11,10 +11,7 @@ namespace Antix.IO.Tests.unit
             var value = TimeSpan.FromSeconds(20);
 
             var watchSettings = IOWatchSettings
-                .Create(x =>
-                            {
-                                x.Interval = TimeSpan.FromSeconds(20);
-                            });
+                .Create(x => { x.Interval = TimeSpan.FromSeconds(20); });
 
             Assert.Equal(value, watchSettings.Interval);
             Assert.Equal(
