@@ -35,10 +35,7 @@ namespace Antix.IO.Tests.integration.file_system
             Thread.Sleep(10);
 
             sut.Watch(
-                new IOCategoryEntity
-                    {
-                        Identifier = tempPath
-                    },
+                IOCategoryEntity.Create(p => p.Identifier = tempPath),
                 IOWatchSettings
                     .Create(x => { x.Interval = TimeSpan.FromMilliseconds(500); })
                 )
@@ -84,10 +81,7 @@ namespace Antix.IO.Tests.integration.file_system
             Thread.Sleep(10);
 
             sut.Watch(
-                new IOCategoryEntity
-                    {
-                        Identifier = tempPath
-                    },
+                IOCategoryEntity.Create(p => p.Identifier = tempPath),
                 IOWatchSettings
                     .Create(x => { x.Interval = TimeSpan.FromMilliseconds(500); })
                 )
@@ -136,10 +130,7 @@ namespace Antix.IO.Tests.integration.file_system
             Thread.Sleep(10);
 
             sut.Watch(
-                new IOCategoryEntity
-                    {
-                        Identifier = tempDirectory
-                    },
+                IOCategoryEntity.Create(p => p.Identifier = tempDirectory),
                 IOWatchSettings
                     .Create(x => { x.Interval = TimeSpan.FromMilliseconds(500); })
                 )
@@ -189,10 +180,7 @@ namespace Antix.IO.Tests.integration.file_system
             Thread.Sleep(10);
 
             sut.Watch(
-                new IOCategoryEntity
-                    {
-                        Identifier = tempPath
-                    },
+                IOCategoryEntity.Create(p => p.Identifier = tempPath),
                 IOWatchSettings
                     .Create(x => { x.Interval = TimeSpan.FromMilliseconds(500); })
                 )
@@ -223,10 +211,7 @@ namespace Antix.IO.Tests.integration.file_system
 
             var sut = GetServiceUnderTest();
             sut.Watch(
-                new IOCategoryEntity
-                    {
-                        Identifier = tempDirectory
-                    },
+                IOCategoryEntity.Create(p => p.Identifier = tempDirectory),
                 IOWatchSettings.Default
                 )
                 .Subscribe(
@@ -260,10 +245,7 @@ namespace Antix.IO.Tests.integration.file_system
             Thread.Sleep(10);
 
             sut.Watch(
-                new IOCategoryEntity
-                    {
-                        Identifier = tempPath
-                    },
+                IOCategoryEntity.Create(p => p.Identifier = tempPath),
                 IOWatchSettings
                     .Create(x => { x.Interval = TimeSpan.FromMilliseconds(500); })
                 )

@@ -70,10 +70,10 @@ namespace Antix.IO.Tests.integration.file_system
 
             var result = sut.GetParentDirectories(path);
 
-            foreach(var directoryPath in result)
+            foreach (var directoryPath in result)
                 Debug.WriteLine(directoryPath);
 
-            Assert.Equal(path.Split('\\').Count()-1, result.Count());
+            Assert.Equal(path.Split('\\').Count() - 1, result.Count());
         }
 
         [Fact]

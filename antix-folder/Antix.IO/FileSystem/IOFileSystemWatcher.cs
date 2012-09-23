@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reactive;
@@ -104,16 +103,28 @@ namespace Antix.IO.FileSystem
                        {
                            Observable
                                .FromEventPattern<FileSystemEventArgs>(fileSystemWatcher, "Created")
-                               .SelectMany(evp=>GetDirectoryChangedEventArgs(evp, fileSystemWatcher.IncludeSubdirectories, fileSystemWatcher.Path)),
+                               .SelectMany(
+                                   evp =>
+                                   GetDirectoryChangedEventArgs(evp, fileSystemWatcher.IncludeSubdirectories,
+                                                                fileSystemWatcher.Path)),
                            Observable
                                .FromEventPattern<FileSystemEventArgs>(fileSystemWatcher, "Changed")
-                               .SelectMany(evp=>GetDirectoryChangedEventArgs(evp, fileSystemWatcher.IncludeSubdirectories, fileSystemWatcher.Path)),
+                               .SelectMany(
+                                   evp =>
+                                   GetDirectoryChangedEventArgs(evp, fileSystemWatcher.IncludeSubdirectories,
+                                                                fileSystemWatcher.Path)),
                            Observable
                                .FromEventPattern<RenamedEventArgs>(fileSystemWatcher, "Renamed")
-                               .SelectMany(evp=>GetDirectoryChangedEventArgs(evp, fileSystemWatcher.IncludeSubdirectories, fileSystemWatcher.Path)),
+                               .SelectMany(
+                                   evp =>
+                                   GetDirectoryChangedEventArgs(evp, fileSystemWatcher.IncludeSubdirectories,
+                                                                fileSystemWatcher.Path)),
                            Observable
                                .FromEventPattern<FileSystemEventArgs>(fileSystemWatcher, "Deleted")
-                               .SelectMany(evp=>GetDirectoryChangedEventArgs(evp, fileSystemWatcher.IncludeSubdirectories, fileSystemWatcher.Path)),
+                               .SelectMany(
+                                   evp =>
+                                   GetDirectoryChangedEventArgs(evp, fileSystemWatcher.IncludeSubdirectories,
+                                                                fileSystemWatcher.Path)),
                            Observable
                                .FromEventPattern<ErrorEventArgs>(fileSystemWatcher, "Error")
                                .SelectMany(ev => Observable.Throw<FileSystemEventArgs>(ev.EventArgs.GetException()))

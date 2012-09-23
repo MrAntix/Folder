@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Antix.IO.Entities;
 using Antix.IO.Entities.Base;
 
@@ -96,17 +95,17 @@ namespace Antix.IO.FileSystem
 
         IOFileEntity GetFileEntity(string path)
         {
-            return new IOFileEntity {Identifier = path};
+            return IOFileEntity.Create(p => p.Identifier = path);
         }
 
         IOCategoryEntity GetCategoryEntity(string path)
         {
-            return new IOCategoryEntity {Identifier = path};
+            return IOCategoryEntity.Create(p => p.Identifier = path);
         }
 
         IONullEntity GetNullEntity(string path)
         {
-            return new IONullEntity {Identifier = path};
+            return IONullEntity.Create(p => p.Identifier = path);
         }
     }
 }
