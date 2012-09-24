@@ -9,14 +9,9 @@ namespace Antix.IO.Entities.Base
             get { return _identifier; }
         }
 
-        protected IOEntity(Parameters parameters)
+        protected IOEntity(string identifier)
         {
-            _identifier = parameters.Identifier;
-        }
-
-        public class Parameters
-        {
-            public string Identifier { get; set; }
+            _identifier = identifier;
         }
     }
 }

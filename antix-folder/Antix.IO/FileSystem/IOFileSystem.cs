@@ -27,10 +27,11 @@ namespace Antix.IO.FileSystem
 
         IEnumerable<IOCategoryEntity> IIOSystem.GetAncestors(IOEntity entity)
         {
+            var parentDirectories = _fileSystemInfoProvider
+                    .GetParentDirectories(entity.Identifier);
             return
-                from directory in _fileSystemInfoProvider
-                    .GetParentDirectories(entity.Identifier)
-                select IOCategoryEntity.Create(x => x.Identifier = directory);
+                from directory in parentDirectories
+                select IOCategoryEntity.Create(directory);
         }
 
         IEnumerable<IOCategoryEntity> IIOSystem.GetParents(IOEntity entity)
@@ -38,8 +39,7 @@ namespace Antix.IO.FileSystem
             return new[]
                        {
                            IOCategoryEntity
-                               .Create(x => x.Identifier =
-                                            _fileSystemInfoProvider
+                               .Create(_fileSystemInfoProvider
                                                 .GetParentDirectory(entity.Identifier))
                        };
         }

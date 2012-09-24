@@ -35,7 +35,7 @@ namespace Antix.IO.Tests.integration.file_system
             Thread.Sleep(10);
 
             sut.Watch(
-                IOCategoryEntity.Create(p => p.Identifier = tempPath),
+                IOCategoryEntity.Create(tempPath),
                 IOWatchSettings
                     .Create(x => { x.Interval = TimeSpan.FromMilliseconds(500); })
                 )
@@ -81,7 +81,7 @@ namespace Antix.IO.Tests.integration.file_system
             Thread.Sleep(10);
 
             sut.Watch(
-                IOCategoryEntity.Create(p => p.Identifier = tempPath),
+                IOCategoryEntity.Create(tempPath),
                 IOWatchSettings
                     .Create(x => { x.Interval = TimeSpan.FromMilliseconds(500); })
                 )
@@ -130,7 +130,7 @@ namespace Antix.IO.Tests.integration.file_system
             Thread.Sleep(10);
 
             sut.Watch(
-                IOCategoryEntity.Create(p => p.Identifier = tempDirectory),
+                IOCategoryEntity.Create(tempDirectory),
                 IOWatchSettings
                     .Create(x => { x.Interval = TimeSpan.FromMilliseconds(500); })
                 )
@@ -180,7 +180,7 @@ namespace Antix.IO.Tests.integration.file_system
             Thread.Sleep(10);
 
             sut.Watch(
-                IOCategoryEntity.Create(p => p.Identifier = tempPath),
+                IOCategoryEntity.Create(tempPath),
                 IOWatchSettings
                     .Create(x => { x.Interval = TimeSpan.FromMilliseconds(500); })
                 )
@@ -211,7 +211,7 @@ namespace Antix.IO.Tests.integration.file_system
 
             var sut = GetServiceUnderTest();
             sut.Watch(
-                IOCategoryEntity.Create(p => p.Identifier = tempDirectory),
+                IOCategoryEntity.Create(tempDirectory),
                 IOWatchSettings.Default
                 )
                 .Subscribe(
@@ -245,7 +245,7 @@ namespace Antix.IO.Tests.integration.file_system
             Thread.Sleep(10);
 
             sut.Watch(
-                IOCategoryEntity.Create(p => p.Identifier = tempPath),
+                IOCategoryEntity.Create(tempPath),
                 IOWatchSettings
                     .Create(x => { x.Interval = TimeSpan.FromMilliseconds(500); })
                 )

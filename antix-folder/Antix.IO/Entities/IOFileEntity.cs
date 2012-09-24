@@ -1,4 +1,3 @@
-using System;
 using Antix.IO.Entities.Base;
 
 namespace Antix.IO.Entities
@@ -6,17 +5,14 @@ namespace Antix.IO.Entities
     public class IOFileEntity :
         IOEntity
     {
-        protected IOFileEntity(Parameters parameters)
-            : base(parameters)
+        protected IOFileEntity(string identifier)
+            : base(identifier)
         {
         }
 
-        public static IOFileEntity Create(Action<Parameters> assign)
+        public static IOFileEntity Create(string identifier)
         {
-            var p = new Parameters();
-            assign(p);
-
-            return new IOFileEntity(p);
+            return new IOFileEntity(identifier);
         }
     }
 }

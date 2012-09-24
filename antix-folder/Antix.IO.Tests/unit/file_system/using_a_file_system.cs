@@ -55,7 +55,7 @@ namespace Antix.IO.Tests.unit.file_system
         public void watch_calls_watcher()
         {
             var entity = IOFileEntity
-                .Create(p => p.Identifier = "An Identifier");
+                .Create("An Identifier");
 
             var mock = GetWatcherMock();
             mock
@@ -73,7 +73,7 @@ namespace Antix.IO.Tests.unit.file_system
         public void watch_without_settings_passes_default()
         {
             var entity = IOFileEntity
-                .Create(p => p.Identifier = "An Identifier");
+                .Create("An Identifier");
 
             var mock = GetWatcherMock();
             mock
@@ -91,7 +91,7 @@ namespace Antix.IO.Tests.unit.file_system
         public void watch_with_settings_calls_watcher()
         {
             var entity = IOFileEntity
-                .Create(p => p.Identifier = "An Identifier");
+                .Create("An Identifier");
 
             var mock = GetWatcherMock();
             mock
@@ -108,7 +108,7 @@ namespace Antix.IO.Tests.unit.file_system
         [Fact]
         public void ancestors_calls_back_to_info_provider()
         {
-            var entity = IOFileEntity.Create(x => x.Identifier = "A Path");
+            var entity = IOFileEntity.Create("A Path");
 
             var infoProviderMock = GetInfoProviderMock();
             infoProviderMock
@@ -127,7 +127,7 @@ namespace Antix.IO.Tests.unit.file_system
         [Fact]
         public void parents_calls_back_to_info_provider()
         {
-            var entity = IOFileEntity.Create(x => x.Identifier = "A Path");
+            var entity = IOFileEntity.Create("A Path");
 
             var infoProviderMock = GetInfoProviderMock();
             infoProviderMock

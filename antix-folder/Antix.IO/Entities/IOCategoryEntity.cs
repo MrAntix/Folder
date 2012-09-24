@@ -1,4 +1,3 @@
-using System;
 using Antix.IO.Entities.Base;
 
 namespace Antix.IO.Entities
@@ -6,17 +5,14 @@ namespace Antix.IO.Entities
     public class IOCategoryEntity :
         IOEntity
     {
-        protected IOCategoryEntity(Parameters parameters)
-            : base(parameters)
+        protected IOCategoryEntity(string identifier)
+            : base(identifier)
         {
         }
 
-        public static IOCategoryEntity Create(Action<Parameters> assign)
+        public static IOCategoryEntity Create(string identifier)
         {
-            var p = new Parameters();
-            assign(p);
-
-            return new IOCategoryEntity(p);
+            return new IOCategoryEntity(identifier);
         }
     }
 }

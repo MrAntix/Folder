@@ -1,4 +1,3 @@
-using System;
 using Antix.IO.Entities.Base;
 
 namespace Antix.IO.Entities
@@ -6,17 +5,14 @@ namespace Antix.IO.Entities
     public class IONullEntity :
         IOEntity
     {
-        protected IONullEntity(Parameters parameters)
-            : base(parameters)
+        protected IONullEntity(string identifier)
+            : base(identifier)
         {
         }
 
-        public static IONullEntity Create(Action<Parameters> assign)
+        public static IONullEntity Create(string identifier)
         {
-            var p = new Parameters();
-            assign(p);
-
-            return new IONullEntity(p);
+            return new IONullEntity(identifier);
         }
     }
 }

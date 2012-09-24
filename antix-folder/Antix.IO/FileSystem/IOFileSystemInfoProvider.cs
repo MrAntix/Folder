@@ -95,17 +95,17 @@ namespace Antix.IO.FileSystem
 
         IOFileEntity GetFileEntity(string path)
         {
-            return IOFileEntity.Create(p => p.Identifier = path);
+            return IOFileEntity.Create(path);
         }
 
         IOCategoryEntity GetCategoryEntity(string path)
         {
-            return IOCategoryEntity.Create(p => p.Identifier = path);
+            return IOCategoryEntity.Create(path);
         }
 
         IONullEntity GetNullEntity(string path)
         {
-            return IONullEntity.Create(p => p.Identifier = path);
+            return IONullEntity.Create(path);
         }
     }
 }
