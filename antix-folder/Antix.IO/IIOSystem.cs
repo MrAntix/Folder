@@ -25,14 +25,21 @@ namespace Antix.IO
         /// </summary>
         /// <param name="entity"> Entity </param>
         /// <returns> Parent Categories </returns>
-        IEnumerable<IOCategoryEntity> GetParentCategories(IOEntity entity);
+        IEnumerable<IOCategoryEntity> GetParents(IOEntity entity);
+
+        /// <summary>
+        ///   <para> Get the ancestral categories for a given entity </para>
+        /// </summary>
+        /// <param name="entity"> Entity </param>
+        /// <returns> Ancestral Categories </returns>
+        IEnumerable<IOCategoryEntity> GetAncestors(IOEntity entity);
 
         /// <summary>
         ///   <para> Get the child entities for a given entity </para>
         /// </summary>
         /// <param name="entity"> Category Entity </param>
         /// <returns> Child entities </returns>
-        IEnumerable<IOEntity> GetChildEntities(IOCategoryEntity entity);
+        IEnumerable<IOEntity> GetChildren(IOCategoryEntity entity);
 
         /// <summary>
         ///   <para> Watch for changes on the entity passed </para>

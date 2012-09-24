@@ -25,18 +25,26 @@ namespace Antix.IO.FileSystem
             return _fileSystemInfoProvider.GetEntity(identifier);
         }
 
-        IEnumerable<IOCategoryEntity> IIOSystem.GetParentCategories(IOEntity entity)
+        IEnumerable<IOCategoryEntity> IIOSystem.GetAncestors(IOEntity entity)
+        {
+            return
+                from directory in _fileSystemInfoProvider
+                    .GetParentDirectories(entity.Identifier)
+                select IOCategoryEntity.Create(x => x.Identifier = directory);
+        }
+
+        IEnumerable<IOCategoryEntity> IIOSystem.GetParents(IOEntity entity)
         {
             return new[]
                        {
-                           (IOCategoryEntity) _fileSystemInfoProvider
-                                                  .GetEntity(
-                                                      _fileSystemInfoProvider
-                                                          .GetParentDirectory(entity.Identifier))
+                           IOCategoryEntity
+                               .Create(x => x.Identifier =
+                                            _fileSystemInfoProvider
+                                                .GetParentDirectory(entity.Identifier))
                        };
         }
 
-        IEnumerable<IOEntity> IIOSystem.GetChildEntities(IOCategoryEntity entity)
+        IEnumerable<IOEntity> IIOSystem.GetChildren(IOCategoryEntity entity)
         {
             return
                 _fileSystemInfoProvider

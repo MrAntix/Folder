@@ -104,5 +104,41 @@ namespace Antix.IO.Tests.unit.file_system
 
             mock.VerifyAll();
         }
+
+        [Fact]
+        public void ancestors_calls_back_to_info_provider()
+        {
+            var entity = IOFileEntity.Create(x => x.Identifier = "A Path");
+
+            var infoProviderMock = GetInfoProviderMock();
+            infoProviderMock
+                .Setup(x => x.GetParentDirectories(entity.Identifier))
+                .Returns(new string[] {})
+                .Verifiable();
+
+            var sut = GetServiceUnderTest(infoProviderMock: infoProviderMock);
+
+            sut.GetAncestors(entity);
+
+            infoProviderMock.VerifyAll();
+        }
+
+
+        [Fact]
+        public void parents_calls_back_to_info_provider()
+        {
+            var entity = IOFileEntity.Create(x => x.Identifier = "A Path");
+
+            var infoProviderMock = GetInfoProviderMock();
+            infoProviderMock
+                .Setup(x => x.GetParentDirectory(entity.Identifier))
+                .Verifiable();
+
+            var sut = GetServiceUnderTest(infoProviderMock: infoProviderMock);
+
+            sut.GetParents(entity);
+
+            infoProviderMock.VerifyAll();
+        }
     }
 }
