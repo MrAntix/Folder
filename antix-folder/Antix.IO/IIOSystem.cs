@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Antix.IO.Entities;
 using Antix.IO.Entities.Base;
 using Antix.IO.Events.Base;
@@ -25,21 +26,21 @@ namespace Antix.IO
         /// </summary>
         /// <param name="entity"> Entity </param>
         /// <returns> Parent Categories </returns>
-        IEnumerable<IOCategoryEntity> GetParents(IOEntity entity);
+        Task<IEnumerable<IOCategoryEntity>> GetParentsAsync(IOEntity entity);
 
         /// <summary>
         ///   <para> Get the ancestral categories for a given entity </para>
         /// </summary>
         /// <param name="entity"> Entity </param>
         /// <returns> Ancestral Categories </returns>
-        IEnumerable<IOCategoryEntity> GetAncestors(IOEntity entity);
+        Task<IEnumerable<IOCategoryEntity>> GetAncestorsAsync(IOEntity entity);
 
         /// <summary>
         ///   <para> Get the child entities for a given entity </para>
         /// </summary>
         /// <param name="entity"> Category Entity </param>
         /// <returns> Child entities </returns>
-        IEnumerable<IOEntity> GetChildren(IOCategoryEntity entity);
+        Task<IEnumerable<IOEntity>> GetChildrenAsync(IOCategoryEntity entity);
 
         /// <summary>
         ///   <para> Watch for changes on the entity passed </para>

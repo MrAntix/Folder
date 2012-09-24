@@ -118,7 +118,7 @@ namespace Antix.IO.Tests.unit.file_system
 
             var sut = GetServiceUnderTest(infoProviderMock: infoProviderMock);
 
-            sut.GetAncestors(entity);
+            sut.GetAncestorsAsync(entity);
 
             infoProviderMock.VerifyAll();
         }
@@ -136,7 +136,7 @@ namespace Antix.IO.Tests.unit.file_system
 
             var sut = GetServiceUnderTest(infoProviderMock: infoProviderMock);
 
-            sut.GetParents(entity);
+            sut.GetParentsAsync(entity);
 
             infoProviderMock.VerifyAll();
         }

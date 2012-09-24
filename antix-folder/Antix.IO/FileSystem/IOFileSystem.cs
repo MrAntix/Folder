@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Antix.IO.Entities;
 using Antix.IO.Entities.Base;
 using Antix.IO.Events.Base;
@@ -25,31 +26,34 @@ namespace Antix.IO.FileSystem
             return _fileSystemInfoProvider.GetEntity(identifier);
         }
 
-        IEnumerable<IOCategoryEntity> IIOSystem.GetAncestors(IOEntity entity)
+        async Task<IEnumerable<IOCategoryEntity>> IIOSystem.GetAncestorsAsync(IOEntity entity)
         {
             var parentDirectories = _fileSystemInfoProvider
                     .GetParentDirectories(entity.Identifier);
-            return
+            return await Task.FromResult(
                 from directory in parentDirectories
-                select IOCategoryEntity.Create(directory);
+                select IOCategoryEntity.Create(directory));
         }
 
-        IEnumerable<IOCategoryEntity> IIOSystem.GetParents(IOEntity entity)
+        async Task<IEnumerable<IOCategoryEntity>> IIOSystem.GetParentsAsync(IOEntity entity)
         {
-            return new[]
+            return await Task.FromResult(
+                new[]
                        {
                            IOCategoryEntity
                                .Create(_fileSystemInfoProvider
                                                 .GetParentDirectory(entity.Identifier))
-                       };
+                       });
         }
 
-        IEnumerable<IOEntity> IIOSystem.GetChildren(IOCategoryEntity entity)
+        async Task<IEnumerable<IOEntity>> IIOSystem.GetChildrenAsync(IOCategoryEntity entity)
         {
             return
-                _fileSystemInfoProvider
-                    .GetChildDirectoriesAndFiles(entity.Identifier)
-                    .Select(_fileSystemInfoProvider.GetEntity);
+                await Task.FromResult(
+                    _fileSystemInfoProvider
+                        .GetChildDirectoriesAndFiles(entity.Identifier)
+                        .Select(_fileSystemInfoProvider.GetEntity)
+                          );
         }
 
         IObservable<IOEvent> IIOSystem.Watch(IOEntity entity)
