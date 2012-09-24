@@ -4,6 +4,9 @@ using Antix.IO.Entities.Base;
 
 namespace Antix.IO.FileSystem
 {
+    /// <summary>
+    /// <para>Provides information on entities in the system</para>
+    /// </summary>
     public interface IIOFileSystemInfoProvider
     {
         /// <summary>

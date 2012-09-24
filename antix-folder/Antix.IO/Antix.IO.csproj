@@ -60,8 +60,10 @@
     <Compile Include="Entities\IONullEntity.cs" />
     <Compile Include="FileSystem\IIOFileSystemInfoProvider.cs" />
     <Compile Include="FileSystem\IIOFileSystemWatcher.cs" />
+    <Compile Include="FileSystem\IIOFileSystemWorker.cs" />
     <Compile Include="FileSystem\IOFileSystemInfoProvider.cs" />
     <Compile Include="FileSystem\IOFileSystemWatcher.cs" />
+    <Compile Include="FileSystem\IOFileSystemWorker.cs" />
     <Compile Include="IIOSystem.cs" />
     <Compile Include="Events\IOCreatedEvent.cs" />
     <Compile Include="Events\IODeletedEvent.cs" />
