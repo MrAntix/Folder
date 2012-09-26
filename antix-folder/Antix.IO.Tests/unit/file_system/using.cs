@@ -1,39 +1,12 @@
 ﻿using Antix.IO.Entities;
-using Antix.IO.FileSystem;
 using Moq;
 using Xunit;
 
 namespace Antix.IO.Tests.unit.file_system
 {
-    public class using_a_file_system
+    public class using_a_file_system :
+        _base
     {
-        IIOSystem GetServiceUnderTest(
-            Mock<IIOFileSystemInfoProvider> infoProviderMock = null,
-            Mock<IIOFileSystemWatcher> watcherMock = null)
-        {
-            infoProviderMock = infoProviderMock ?? GetInfoProviderMock();
-            watcherMock = watcherMock ?? GetWatcherMock();
-
-            return new IOFileSystem(
-                watcherMock.Object,
-                infoProviderMock.Object
-                );
-        }
-
-        Mock<IIOFileSystemWatcher> GetWatcherMock()
-        {
-            var mock = new Mock<IIOFileSystemWatcher>();
-
-            return mock;
-        }
-
-        Mock<IIOFileSystemInfoProvider> GetInfoProviderMock()
-        {
-            var mock = new Mock<IIOFileSystemInfoProvider>();
-
-            return mock;
-        }
-
         [Fact]
         public void get_info_calls_provider()
         {

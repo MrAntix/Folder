@@ -57,7 +57,9 @@
     <Compile Include="Entities\Base\IOEntity.cs" />
     <Compile Include="Entities\IOCategoryEntity.cs" />
     <Compile Include="Entities\IOFileEntity.cs" />
+    <Compile Include="Entities\IOFileEntityWriter.cs" />
     <Compile Include="Entities\IONullEntity.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="FileSystem\IIOFileSystemInfoProvider.cs" />
     <Compile Include="FileSystem\IIOFileSystemWatcher.cs" />
     <Compile Include="FileSystem\IIOFileSystemWorker.cs" />

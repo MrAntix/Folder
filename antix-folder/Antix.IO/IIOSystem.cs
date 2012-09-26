@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Antix.IO.Entities;
 using Antix.IO.Entities.Base;
@@ -46,15 +48,13 @@ namespace Antix.IO
         ///   <para> Watch for changes on the entity passed </para>
         /// </summary>
         /// <param name="entity"> Entity </param>
-        /// <returns> Observable Events </returns>
-        IObservable<IOEvent> Watch(IOEntity entity);
-
-        /// <summary>
-        ///   <para> Watch for changes on the entity passed </para>
-        /// </summary>
-        /// <param name="entity"> Entity </param>
         /// <param name="settings"> Settings for the watch </param>
         /// <returns> Observable Events </returns>
         IObservable<IOEvent> Watch(IOEntity entity, IOWatchSettings settings);
+
+        /// <summary>
+        /// <para>Create a file</para>
+        /// </summary>
+        IOFileEntityWriter CreateFile(string identifier, Encoding encoding);
     }
 }
