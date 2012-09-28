@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Antix.IO.Entities;
+using Antix.IO.Entities.Base;
 using Antix.IO.FileSystem;
 using Xunit;
 
@@ -21,7 +22,7 @@ namespace Antix.IO.Tests.integration.file_system
 
             var sut = GetServiceUnderTest();
 
-            var result = sut.GetEntity(path);
+            var result = sut.GetEntity<IOEntity>(path);
 
             Assert.IsType<IOCategoryEntity>(result);
         }
@@ -33,7 +34,7 @@ namespace Antix.IO.Tests.integration.file_system
 
             var sut = GetServiceUnderTest();
 
-            var result = sut.GetEntity(path);
+            var result = sut.GetEntity<IOEntity>(path);
 
             Assert.IsType<IOFileEntity>(result);
         }
@@ -46,7 +47,7 @@ namespace Antix.IO.Tests.integration.file_system
 
             var sut = GetServiceUnderTest();
 
-            var result = sut.GetEntity(path);
+            var result = sut.GetEntity<IOEntity>(path);
 
             Assert.IsType<IONullEntity>(result);
         }
@@ -68,7 +69,9 @@ namespace Antix.IO.Tests.integration.file_system
             var sut = GetServiceUnderTest();
             var path = Path.GetTempFileName();
 
-            var result = sut.GetParentDirectories(path);
+            var result = sut
+                .GetParentDirectories(path)
+                .ToArray();
 
             foreach (var directoryPath in result)
                 Debug.WriteLine(directoryPath);

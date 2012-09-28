@@ -21,7 +21,8 @@ namespace Antix.IO
         /// </summary>
         /// <param name="identifier"> Identifier </param>
         /// <returns> IO entiy </returns>
-        IOEntity GetEntity(string identifier);
+        TEntity GetEntity<TEntity>(string identifier)
+            where TEntity : IOEntity;
 
         /// <summary>
         ///   <para> Get the parent categories for a given entity </para>
@@ -56,5 +57,10 @@ namespace Antix.IO
         /// <para>Create a file</para>
         /// </summary>
         IOFileEntityWriter CreateFile(string identifier, Encoding encoding);
+
+        /// <summary>
+        /// <para>Delete a File</para>
+        /// </summary>
+        void DeleteFile(IOFileEntity entity);
     }
 }

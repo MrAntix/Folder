@@ -33,27 +33,12 @@ namespace Antix.IO.FileSystem
             }
         }
 
-        IOEntity IIOFileSystemInfoProvider
-            .GetEntity(string path)
+        TEntity IIOFileSystemInfoProvider
+            .GetEntity<TEntity>(string path)
         {
             if (string.IsNullOrWhiteSpace(path)) throw new ArgumentException("identifier");
 
-            return GetEntity(path);
-        }
-
-        IOFileEntity IIOFileSystemInfoProvider.GetFileEntity(string path)
-        {
-            return GetFileEntity(path);
-        }
-
-        IOCategoryEntity IIOFileSystemInfoProvider.GetCategoryEntity(string path)
-        {
-            return GetCategoryEntity(path);
-        }
-
-        IONullEntity IIOFileSystemInfoProvider.GetNullEntity(string path)
-        {
-            return GetNullEntity(path);
+            return GetEntity<TEntity>(path);
         }
 
         // private routines
@@ -83,29 +68,14 @@ namespace Antix.IO.FileSystem
             return Directory.GetFiles(path);
         }
 
-
-        IOEntity GetEntity(string path)
+        TEntity GetEntity<TEntity>(string path)
+            where TEntity : IOEntity
         {
-            return File.Exists(path)
-                       ? GetFileEntity(path)
-                       : Directory.Exists(path)
-                             ? (IOEntity) GetCategoryEntity(path)
-                             : GetNullEntity(path);
-        }
-
-        IOFileEntity GetFileEntity(string path)
-        {
-            return IOFileEntity.Create(path);
-        }
-
-        IOCategoryEntity GetCategoryEntity(string path)
-        {
-            return IOCategoryEntity.Create(path);
-        }
-
-        IONullEntity GetNullEntity(string path)
-        {
-            return IONullEntity.Create(path);
+            return (TEntity) (File.Exists(path)
+                                  ? IOFileEntity.Create(path)
+                                  : Directory.Exists(path)
+                                        ? (IOEntity) IOCategoryEntity.Create(path)
+                                        : IONullEntity.Create(path));
         }
     }
 }

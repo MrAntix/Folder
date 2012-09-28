@@ -25,12 +25,13 @@ namespace Antix.IO.FileSystem
             _worker = worker;
         }
 
-        IOEntity IIOSystem.GetEntity(string identifier)
+        public TEntity GetEntity<TEntity>(string identifier) where TEntity : IOEntity
         {
-            return _infoProvider.GetEntity(identifier);
+            return _infoProvider.GetEntity<TEntity>(identifier);
         }
 
-        async Task<IEnumerable<IOCategoryEntity>> IIOSystem.GetAncestorsAsync(IOEntity entity)
+        async Task<IEnumerable<IOCategoryEntity>> IIOSystem
+            .GetAncestorsAsync(IOEntity entity)
         {
             var parentDirectories = _infoProvider
                     .GetParentDirectories(entity.Identifier);
@@ -39,7 +40,8 @@ namespace Antix.IO.FileSystem
                 select IOCategoryEntity.Create(directory));
         }
 
-        async Task<IEnumerable<IOCategoryEntity>> IIOSystem.GetParentsAsync(IOEntity entity)
+        async Task<IEnumerable<IOCategoryEntity>> IIOSystem
+            .GetParentsAsync(IOEntity entity)
         {
             return await Task.FromResult(
                 new[]
@@ -50,28 +52,36 @@ namespace Antix.IO.FileSystem
                        });
         }
 
-        async Task<IEnumerable<IOEntity>> IIOSystem.GetChildrenAsync(IOCategoryEntity entity)
+        async Task<IEnumerable<IOEntity>> IIOSystem
+            .GetChildrenAsync(IOCategoryEntity entity)
         {
             return
                 await Task.FromResult(
                     _infoProvider
                         .GetChildDirectoriesAndFiles(entity.Identifier)
-                        .Select(_infoProvider.GetEntity)
+                        .Select(_infoProvider.GetEntity<IOEntity>)
                           );
         }
 
-        IObservable<IOEvent> IIOSystem.Watch(IOEntity entity, IOWatchSettings settings)
+        IObservable<IOEvent> IIOSystem
+            .Watch(IOEntity entity, IOWatchSettings settings)
         {
             return _watcher.Watch(entity, settings);
         }
 
-        IOFileEntityWriter IIOSystem.CreateFile(string identifier, Encoding encoding)
+        IOFileEntityWriter IIOSystem
+            .CreateFile(string identifier, Encoding encoding)
         {
             return IOFileEntityWriter.Create(
                 _worker.CreateFile(identifier),
                 encoding,
                 IOFileEntity.Create(identifier)
                 );
+        }
+
+        public void DeleteFile(IOFileEntity entity)
+        {
+            _worker.DeleteFile(entity.Identifier);
         }
     }
 }

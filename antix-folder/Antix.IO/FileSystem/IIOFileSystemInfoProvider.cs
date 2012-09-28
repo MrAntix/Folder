@@ -35,27 +35,7 @@ namespace Antix.IO.FileSystem
         /// </summary>
         /// <param name="path"> path </param>
         /// <returns> Entity </returns>
-        IOEntity GetEntity(string path);
-
-        /// <summary>
-        ///   <para> Get file entity </para>
-        /// </summary>
-        /// <param name="path"> path </param>
-        /// <returns> Entity </returns>
-        IOFileEntity GetFileEntity(string path);
-
-        /// <summary>
-        ///   <para> Get category entity </para>
-        /// </summary>
-        /// <param name="path"> path </param>
-        /// <returns> Entity </returns>
-        IOCategoryEntity GetCategoryEntity(string path);
-
-        /// <summary>
-        ///   <para> Get null entity </para>
-        /// </summary>
-        /// <param name="path"> path </param>
-        /// <returns> Entity </returns>
-        IONullEntity GetNullEntity(string path);
+        TEntity GetEntity<TEntity>(string path)
+            where TEntity : IOEntity;
     }
 }

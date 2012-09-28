@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Antix.IO.Entities;
 using Xunit;
 
 namespace Antix.IO.Tests.unit.file_system
@@ -9,7 +10,6 @@ namespace Antix.IO.Tests.unit.file_system
         [Fact]
         public void can_create_a_file()
         {
-            const string text = "Some text";
             const string path = "A Path";
 
             var workerMock = GetWorker();
@@ -20,10 +20,33 @@ namespace Antix.IO.Tests.unit.file_system
 
             var sut = GetServiceUnderTest(workerMock: workerMock);
 
-            using (var file = sut.CreateFile(path))
+            using (sut.CreateFile(path))
             {
-                file.Write(text);
             }
+
+            workerMock.Verify();
+        }
+
+        [Fact]
+        public void can_delete_a_file()
+        {
+            const string path = "A Path";
+
+            var workerMock = GetWorker();
+            workerMock
+                .Setup(x => x.DeleteFile(path))
+                .Verifiable();
+
+            var infoProviderMock = GetInfoProviderMock();
+            infoProviderMock
+                .Setup(x => x.GetEntity<IOFileEntity>(path))
+                .Returns(IOFileEntity.Create(path));
+
+            var sut = GetServiceUnderTest(
+                workerMock: workerMock, 
+                infoProviderMock: infoProviderMock);
+
+            sut.DeleteFile(path);
 
             workerMock.Verify();
         }

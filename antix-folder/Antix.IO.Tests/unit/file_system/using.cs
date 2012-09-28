@@ -1,4 +1,5 @@
 ﻿using Antix.IO.Entities;
+using Antix.IO.Entities.Base;
 using Moq;
 using Xunit;
 
@@ -14,12 +15,12 @@ namespace Antix.IO.Tests.unit.file_system
 
             var mock = GetInfoProviderMock();
             mock
-                .Setup(o => o.GetEntity(path))
+                .Setup(o => o.GetEntity<IOEntity>(path))
                 .Verifiable();
 
             var sut = GetServiceUnderTest(mock);
 
-            sut.GetEntity(path);
+            sut.GetEntity<IOEntity>(path);
 
             mock.VerifyAll();
         }
